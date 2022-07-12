@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-07-11 20:12:21
  * @LastEditors: chenjie
- * @LastEditTime: 2022-07-12 19:15:27
+ * @LastEditTime: 2022-07-12 22:57:21
  * @FilePath: \react-geekh5-ts\.eslintrc.js
  * @Description:
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -31,5 +31,6 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     'no-use-before-define': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/no-non-null-assertion': 'off',
   },
 }

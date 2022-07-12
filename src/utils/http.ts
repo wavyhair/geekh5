@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-06-17 22:01:05
  * @LastEditors: chenjie
- * @LastEditTime: 2022-07-12 21:02:43
+ * @LastEditTime: 2022-07-12 22:41:07
  * @FilePath: \react-geekh5-ts\src\utils\http.ts
  * @Description:
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -12,7 +12,6 @@ import store from '@/store'
 import customHistory from '@/utils/history'
 import { Toast } from 'antd-mobile'
 const baseURL = process.env.REACT_APP_URL
-console.log('baseURL', process.env.REACT_APP_URL)
 const http = axios.create({
   baseURL,
   timeout: 5000,
@@ -31,7 +30,7 @@ http.interceptors.request.use(
 // 响应拦截器
 http.interceptors.response.use(
   (res) => {
-    return res?.data?.data || res
+    return res
   },
   (e) => {
     if (!e.response) {

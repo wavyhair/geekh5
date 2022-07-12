@@ -2,27 +2,37 @@
  * @Author: chenjie
  * @Date: 2022-07-05 21:00:57
  * @LastEditors: chenjie
- * @LastEditTime: 2022-07-12 20:58:18
+ * @LastEditTime: 2022-07-12 23:44:12
  * @FilePath: \react-geekh5-ts\src\pages\Login\index.tsx
  * @Description: Login
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
  */
 import { login } from '@/store/festures/login-slice';
 import styles from './index.module.scss';
-import { Button, NavBar, Form, Input } from 'antd-mobile';
+import { Button, NavBar, Form, Input, Toast } from 'antd-mobile';
 import { useAppDispatch } from '@/store/hooks';
+import { useNavigate } from 'react-router-dom';
 type LoginFrom = {
   mobile: string;
   code: string
 }
 export default function Login() {
   const dispatch = useAppDispatch()
+  const navegete = useNavigate()
   const onFinish = async (values: LoginFrom) => {
-    await dispatch(login(values))
+    try {
+      await dispatch(login(values))
+      console.log(' 2', 2)
+      Toast.show({ content: '登录成功', duration: 600, afterClose: () => { navegete('/home', { replace: true }) } })
+    } catch (e) {
+      console.log(' e', e)
+      return false
+    }
+
   }
   const initialValues = {
-    mobile: '18064324942',
-    code: '121212'
+    mobile: '13911112222',
+    code: '246810'
   }
   return (
     <div className={styles.root}>
