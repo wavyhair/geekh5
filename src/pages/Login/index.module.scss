@@ -13,30 +13,36 @@
       .adm-list {
         --align-items: end !important;
       }
+
       .adm-list-default {
         border: none;
       }
+
       .adm-list-item {
         padding: 0;
       }
+
       .login-item {
         // 注意：因为 1px 边框样式使用了决定定位，所以，此处需要将设置为相对定位
         position: relative;
         // 为该元素设置 1px 边框
         @include hairline(bottom, #f0f0f0);
 
-        > .adm-list-item-content {
+        >.adm-list-item-content {
           height: 70px;
         }
       }
+
       .adm-list-item-content {
         position: relative;
         border-bottom: none;
       }
+
       // 验证码
       .adm-input-wrapper {
         --placeholder-color: #a5a6ab;
       }
+
       .code-extra {
         color: #595769;
         font-size: 14px;
@@ -45,9 +51,10 @@
           color: #a5a6ab;
         }
       }
+
       .adm-list-item-description {
         position: absolute;
-        bottom: -25px;
+        bottom: -3px;
       }
 
       .login-submit {
