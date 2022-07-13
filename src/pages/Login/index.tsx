@@ -7,11 +7,13 @@
  * @Description: Login
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
  */
+import { useNavigate } from 'react-router-dom';
+import { AxiosError } from 'axios';
+import { useAppDispatch } from '@/store/hooks';
+import { Button, NavBar, Form, Input, Toast } from 'antd-mobile';
 import { login } from '@/store/festures/login-slice';
 import styles from './index.module.scss';
-import { Button, NavBar, Form, Input, Toast } from 'antd-mobile';
-import { useAppDispatch } from '@/store/hooks';
-import { useNavigate } from 'react-router-dom';
+
 type LoginFrom = {
   mobile: string;
   code: string
@@ -22,11 +24,10 @@ export default function Login() {
   const onFinish = async (values: LoginFrom) => {
     try {
       await dispatch(login(values))
-      console.log(' 2', 2)
       Toast.show({ content: '登录成功', duration: 600, afterClose: () => { navegete('/home', { replace: true }) } })
     } catch (e) {
-      console.log(' e', e)
-      return false
+      const error = e as AxiosError<{ message: string }>
+      Toast.show(error.message)
     }
 
   }
