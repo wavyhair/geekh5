@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-07-10 18:28:51
  * @LastEditors: chenjie
- * @LastEditTime: 2022-07-13 19:18:22
+ * @LastEditTime: 2022-07-13 20:34:47
  * @FilePath: \react-geekh5-ts\src\store\festures\login-slice.ts
  * @Description: login-slice
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -10,9 +10,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import http from "@/utils/http";
 import type { ToKen } from "@/types/data";
-import { setToken } from "@/utils/auth";
+import { setToken, getToken } from "@/utils/auth";
+import { Toast } from "antd-mobile";
+
 enum API {
-    Login = '/authorizations'
+    Login = '/authorizations',
+    getCode = '/sms/codes/'
 }
 type LoginParams = {
     mobile: string;
@@ -24,9 +27,10 @@ type LoginResponse = {
 }
 
 const initialState: ToKen = {
-    token: '',
-    refresh_token: ''
+    token: getToken().token,
+    refresh_token: getToken().refresh_token
 }
+// 登录
 export const login = createAsyncThunk('login/login', async (values: LoginParams) => {
     try {
         const res = await http.post<LoginResponse>(API.Login, values)
@@ -34,7 +38,15 @@ export const login = createAsyncThunk('login/login', async (values: LoginParams)
     } catch (e: any) {
         throw Error(e.response.data.message)
     }
-
+})
+// 获取验证码
+export const getCode = createAsyncThunk('login/getCode', async (mobile: string) => {
+    try {
+        const res = await http.get<LoginResponse>(API.getCode + mobile)
+        return res.data
+    } catch (e: any) {
+        throw Error(e.response.data.message)
+    }
 })
 export const loginSlice = createSlice({
     name: 'login',
@@ -50,7 +62,14 @@ export const loginSlice = createSlice({
                 setToken({ token: payload!.data.token, refresh_token: payload!.data.refresh_token })
             })
             .addCase(login.rejected, (state, e) => {
-                throw Error(e.error.message)
+                if (e.error.message) {
+                    Toast.show(e.error.message)
+                }
+            })
+            .addCase(getCode.rejected, (state, e) => {
+                if (e.error.message) {
+                    Toast.show(e.error.message)
+                }
             })
     }
 })
