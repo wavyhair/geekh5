@@ -2,16 +2,18 @@
  * @Author: chenjie
  * @Date: 2022-07-10 18:27:25
  * @LastEditors: chenjie
- * @LastEditTime: 2022-07-12 20:50:01
+ * @LastEditTime: 2022-07-19 20:58:10
  * @FilePath: \react-geekh5-ts\src\store\index.ts
- * @Description: 
+ * @Description: store
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
  */
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import { loginSlice } from "./festures/login-slice";
+import loginSlice from "./festures/login-slice";
+import profileSlice from './festures/profile-slice';
 const store = configureStore({
     reducer: {
-        login: loginSlice.reducer
+        login: loginSlice,
+        profile: profileSlice
     }
 })
 export type AppDispatch = typeof store.dispatch;
