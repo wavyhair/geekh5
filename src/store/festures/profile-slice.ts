@@ -8,7 +8,7 @@
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
  */
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import type { User } from "@/types/data";
+import type { User,UserResponse } from "@/types/data";
 import http from "@/utils/http";
 import { Toast } from "antd-mobile";
 import { RootState } from "..";
@@ -17,10 +17,7 @@ type ProfileState = {
     user: User
 }
 
-type UserResponse = {
-    message: string;
-    data: User
-}
+
 const initialState = {
     user: {}
 } as ProfileState

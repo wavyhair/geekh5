@@ -13,6 +13,7 @@ export default function Profile() {
     const dispatch = useAppDispatch()
     dispatch(getUser())
     const { photo, name, like_count, follow_count, fans_count, art_count } = useAppSelector(selectUser)
+    console.log(photo, name, like_count, follow_count, fans_count, art_count)
     return (
         <div>Profile</div>
     )

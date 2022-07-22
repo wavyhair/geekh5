@@ -9,7 +9,7 @@
  */
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import http from "@/utils/http";
-import type { ToKen } from "@/types/data";
+import type { ToKen,LoginResponse } from "@/types/data";
 import { setToken, getToken } from "@/utils/auth";
 import { Toast } from "antd-mobile";
 
@@ -21,10 +21,7 @@ type LoginParams = {
     mobile: string;
     code: string
 }
-type LoginResponse = {
-    message: string;
-    data: ToKen
-}
+
 
 const initialState: ToKen = {
     token: getToken().token,

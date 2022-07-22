@@ -22,3 +22,13 @@ export type User = {
     fans_count: number;
     like_count: number;
 }
+// 响应类型
+type ApiResponse<Data> = {
+    message:string;
+    data:Data
+}
+// 登录
+export type LoginResponse = ApiResponse<ToKen>
+
+// 用户个人信息
+export  type UserResponse = ApiResponse<User>
