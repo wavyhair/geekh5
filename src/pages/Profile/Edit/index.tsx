@@ -2,27 +2,25 @@
  * @Author: chenjie
  * @Date: 2022-07-22 14:05:14
  * @LastEditors: chenjie
- * @LastEditTime: 2022-07-22 15:19:56
+ * @LastEditTime: 2022-07-22 17:05:24
  * @FilePath: /src/pages/Profile/Edit/index.tsx
  * @Description: Edit
  */
+import styles from './index.module.scss'
+import {useInitialState} from '@/utils/use-initial-state';
 import { Button, List, DatePicker, NavBar } from 'antd-mobile'
 import classNames from 'classnames'
-import { useAppSelector, useAppDispatch } from '@/store/hooks';
 import { selectUserProfile, getuserProfile } from '@/store/festures/profile-slice';
-
-
-import styles from './index.module.scss'
-import { useEffect } from 'react';
-
 const Item = List.Item
 
 const ProfileEdit = () => {
-  const dispatch = useAppDispatch()
-  const { photo, name, gender, intro, birthday } = useAppSelector(selectUserProfile)
-  useEffect(() => {
-    dispatch(getuserProfile())
-  }, [dispatch])
+    const state = useInitialState(getuserProfile,selectUserProfile)
+    console.log('state',state)
+  // const dispatch = useAppDispatch()
+  // const { photo, name, gender, intro, birthday } = useAppSelector(selectUserProfile)
+  // useEffect(() => {
+  //   dispatch(getuserProfile())
+  // }, [dispatch])
   return (
     <div className={styles.root}>
       <div className="content">
@@ -45,7 +43,7 @@ const ProfileEdit = () => {
                   <img
                     width={24}
                     height={24}
-                    src={photo || 'https://pic3.zhimg.com/v2-86e7af1f4d8fe235ea886394838b59e3_is.jpg?source=32738c0c'}
+                    src={ 'https://pic3.zhimg.com/v2-86e7af1f4d8fe235ea886394838b59e3_is.jpg?source=32738c0c'}
                     alt=""
                   />
                 </span>
@@ -54,14 +52,14 @@ const ProfileEdit = () => {
             >
               头像
             </Item>
-            <Item arrow extra={name || '怎么吃不饱'}>
+            <Item arrow extra={ '怎么吃不饱'}>
               昵称
             </Item>
             <Item
               arrow
               extra={
                 <span className={classNames('intro', 'normal')}>
-                  {intro || '未填写'}
+                  { '未填写'}
                 </span>
               }
             >
@@ -70,10 +68,10 @@ const ProfileEdit = () => {
           </List>
 
           <List className="profile-list">
-            <Item arrow extra={gender === 1 ? '男' : '女'}>
+            <Item arrow extra={'女'}>
               性别
             </Item>
-            <Item arrow extra={birthday}>
+            <Item arrow extra={1998}>
               生日
             </Item>
           </List>
