@@ -2,8 +2,8 @@
  * @Author: chenjie
  * @Date: 2022-07-05 21:00:57
  * @LastEditors: chenjie
- * @LastEditTime: 2022-07-13 20:53:17
- * @FilePath: \react-geekh5-ts\src\pages\Login\index.tsx
+ * @LastEditTime: 2022-07-22 15:18:54
+ * @FilePath: /src/pages/Login/index.tsx
  * @Description: Login
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
  */
@@ -33,7 +33,7 @@ export default function Login() {
   // 登录
   const onFinish = async (values: LoginFrom) => {
     await dispatch(login(values))
-    Toast.show({ content: '登录成功', duration: 600, afterClose: () => { navegete('/home', { replace: true }) } })
+    Toast.show({ content: '登录成功', duration: 600, afterClose: () => { navegete('/home/index', { replace: true }) } })
   }
   // 发送验证码
   const sendCode = async () => {

@@ -2,8 +2,8 @@
  * @Author: chenjie
  * @Date: 2022-07-10 18:32:23
  * @LastEditors: chenjie
- * @LastEditTime: 2022-07-19 20:53:04
- * @FilePath: \react-geekh5-ts\src\types\data.d.ts
+ * @LastEditTime: 2022-07-22 14:59:35
+ * @FilePath: /src/types/data.d.ts
  * @Description: 
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
  */
@@ -12,7 +12,7 @@ export type ToKen = {
     token: string;
     refresh_token: string
 }
-// 个人信息
+// 用户信息
 export type User = {
     id: string;
     name: string;
@@ -30,5 +30,18 @@ type ApiResponse<Data> = {
 // 登录
 export type LoginResponse = ApiResponse<ToKen>
 
-// 用户个人信息
-export  type UserResponse = ApiResponse<User>
+// 用户信息响应
+export type UserResponse = ApiResponse<User>
+
+// 个人信息
+export type UserProfile = {
+    id: string;
+    photo: string;
+    name: string;
+    mobile: string;
+    gender: number;
+    birthday: string;
+    intro: string;
+}
+// 个人信息响应
+export type UserProfileResponse =ApiResponse<UserProfile>
