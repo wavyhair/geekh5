@@ -1,39 +1,31 @@
-.root
-{
+.root {
     height: 100%;
 
-    :global
-    {
-        .content
-        {
+    :global {
+        .content {
             position: relative;
             z-index: 1;
 
             height: 100%;
         }
 
-        .wrapper
-        {
+        .wrapper {
             background-color: #f7f8fa;
         }
 
-        .profile-list
-        {
+        .profile-list {
             font-size: 14px;
 
-            .adm-list-item
-            {
+            .adm-list-item {
                 padding-left: 17px;
             }
 
-            .adm-list-item-content-extra
-            {
+            .adm-list-item-content-extra {
                 padding-right: 13px;
 
                 color: #3a3948;
 
-                .avatar-wrapper
-                {
+                .avatar-wrapper {
                     display: inline-block;
                     overflow: hidden;
 
@@ -41,38 +33,32 @@
 
                     border-radius: 50%;
 
-                    img
-                    {
+                    img {
                         display: block;
 
                         object-fit: cover;
                     }
                 }
 
-                .intro
-                {
+                .intro {
                     color: #c8c9cc;
 
-                    &.normal
-                    {
+                    &.normal {
                         color: #3a3948;
                     }
                 }
             }
 
-            .adm-list-item-content-arrow
-            {
+            .adm-list-item-content-arrow {
                 padding-left: 0;
             }
 
-            &:nth-child(2)
-            {
+            &:nth-child(2) {
                 margin-top: 12px;
             }
         }
 
-        .logout
-        {
+        .logout {
             position: absolute;
             bottom: 60px;
 
@@ -80,8 +66,7 @@
             height: 44px;
             // padding: 0 16px;
 
-            .btn
-            {
+            .btn {
                 font-size: 16px;
 
                 width: 100%;
@@ -96,30 +81,8 @@
 }
 
 // popup 不在当前组件结构中，因此，只能设置全局样式
-:global
-{
-    .adm-picker-popup-body
-    {
-        .adm-picker-popup-header
-        {
-            background-size: 0;
-            &::after
-            {
-                display: none !important;
-            }
-        }
-    }
-    .adm-picker-header
-    {
-        .adm-picker-header-button
-        {
-            font-size: 14px;
-
-            color: #969799;
-        }
-        .adm-picker-header-button:nth-last-child(1)
-        {
-            color: #fc6627;
-        }
+:global {
+    .adm-popup-body {
+        height: 100%;
     }
 }

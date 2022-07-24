@@ -2,18 +2,41 @@
  * @Author: chenjie
  * @Date: 2022-07-22 14:05:14
  * @LastEditors: chenjie
- * @LastEditTime: 2022-07-24 14:21:34
+ * @LastEditTime: 2022-07-24 22:03:21
  * @FilePath: \react-geekh5-ts\src\pages\Profile\Edit\index.tsx
  * @Description: Edit
  */
 import styles from './index.module.scss'
-import { useInitialState } from '@/utils/use-initial-state';
-import { Button, List, DatePicker, NavBar } from 'antd-mobile'
-import classNames from 'classnames'
-import { selectUserProfile, getuserProfile } from '@/store/festures/profile-slice';
 import type { UserProfile } from '@/types/data';
+import EditInput from './components/EditInput';
+import { useInitialState } from '@/utils/use-initial-state';
+import { Button, List, DatePicker, NavBar, Popup, Toast } from 'antd-mobile'
+import classNames from 'classnames'
+import { selectUserProfile, getuserProfile, updateUserProfile } from '@/store/festures/profile-slice';
+import { useState } from 'react';
+import { useAppDispatch } from '@/store/hooks';
 const Item = List.Item
+
 const ProfileEdit = () => {
+  const dispatch = useAppDispatch()
+  const [inputVisible, setInputVisible] = useState(false)
+  // 展示
+  const showInput = () => {
+    setInputVisible(true)
+  }
+
+  // 隐藏
+  const hideInput = () => {
+    setInputVisible(false)
+  }
+
+  // 修改
+  const updateName = async (name: string) => {
+    await dispatch(updateUserProfile({ name }))
+    Toast.show({ content: '更新成功', duration: 100 })
+    dispatch(getuserProfile())
+    hideInput()
+  }
   const state: UserProfile = useInitialState(getuserProfile, selectUserProfile)
   return (
     <div className={styles.root}>
@@ -46,7 +69,7 @@ const ProfileEdit = () => {
             >
               头像
             </Item>
-            <Item arrow extra={state.name || '怎么吃不饱'}>
+            <Item arrow extra={state.name || '怎么吃不饱'} onClick={showInput}>
               昵称
             </Item>
             <Item
@@ -83,6 +106,10 @@ const ProfileEdit = () => {
           <Button className="btn">退出登录</Button>
         </div>
       </div>
+      <Popup visible={inputVisible} >
+        <EditInput value={state.name} onClose={hideInput} updateName={updateName} />
+      </Popup>
+
     </div>
   )
 }

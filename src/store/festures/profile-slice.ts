@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-07-19 20:54:23
  * @LastEditors: chenjie
- * @LastEditTime: 2022-07-24 14:20:21
+ * @LastEditTime: 2022-07-24 22:02:52
  * @FilePath: \react-geekh5-ts\src\store\festures\profile-slice.ts
  * @Description: profile-slice
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -44,6 +44,17 @@ export const getuserProfile = createAsyncThunk('profile/getuserProfile', async (
     }
 })
 
+// 修改个人信息
+export const updateUserProfile = createAsyncThunk('profile/updateUserProfile', async (userProfile: Partial<UserProfile>) => {
+    try {
+        await http.patch('/user/profile', userProfile)
+        return userProfile
+    } catch (e: any) {
+        throw Error(e.response.data.message)
+    }
+})
+
+
 
 export const profileSlice = createSlice({
     name: 'profile',
@@ -65,6 +76,11 @@ export const profileSlice = createSlice({
                 state.userProfile = payload
             })
             .addCase(getuserProfile.rejected, (state, e) => {
+                if (e.error.message) {
+                    Toast.show(e.error.message)
+                }
+            })
+            .addCase(updateUserProfile.rejected, (state, e) => {
                 if (e.error.message) {
                     Toast.show(e.error.message)
                 }
