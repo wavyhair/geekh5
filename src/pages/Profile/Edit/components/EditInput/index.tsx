@@ -2,26 +2,30 @@
  * @Author: chenjie
  * @Date: 2022-07-23 15:29:01
  * @LastEditors: chenjie
- * @LastEditTime: 2022-07-24 18:00:32
- * @FilePath: \react-geekh5-ts\src\pages\Profile\Edit\components\EditInput\index.tsx
+ * @LastEditTime: 2022-07-25 11:48:04
+ * @FilePath: /src/pages/Profile/Edit/components/EditInput/index.tsx
  * @Description: 
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
  */
-import { Input, NavBar } from 'antd-mobile'
-import { useState } from 'react'
+import { Input, NavBar, TextArea } from 'antd-mobile'
+import { useMemo, useState } from 'react'
 
 import styles from './index.module.scss'
 
 type Props = {
   onClose: () => void
-  value: string
-  updateName: (name: string) => void
+  value: string 
+  type: 'name' | 'intro'
+  updateProfile: (key:'name' | 'intro',value: string) => void
 }
-const EditInput = ({ onClose, value, updateName }: Props) => {
+const EditInput = ({ onClose, value, updateProfile, type }: Props) => {
   const [inputValue, setInputValue] = useState(value)
+  const inputType = useMemo(() => {
+    return type === 'name' ? true : false
+  }, [type])
   // 提交
   const onSave = () => {
-    updateName(inputValue)
+    updateProfile(type,inputValue)
   }
   return (
     <div className={styles.root}>
@@ -30,15 +34,16 @@ const EditInput = ({ onClose, value, updateName }: Props) => {
         onBack={onClose}
         right={<span className="commit-btn" onClick={onSave}>提交</span>}
       >
-        编辑昵称
+        {inputType ? '编辑昵称' : '编辑简介'}
       </NavBar>
 
       <div className="edit-input-content">
-        <h3>昵称</h3>
+        <h3> {inputType ? '昵称' : '简介'}</h3>
+        {inputType ?
+         <div className="input-wrap">
+          <Input placeholder="请输入昵称" value={inputValue} onChange={setInputValue} />
+        </div> : <TextArea rows={3} maxLength={100} className='textarea' placeholder='请输入简介'value={inputValue} onChange={setInputValue}/>}
 
-        <div className="input-wrap">
-          <Input placeholder="请输入" value={inputValue} onChange={setInputValue} />
-        </div>
       </div>
     </div>
   )

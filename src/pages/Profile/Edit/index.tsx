@@ -2,8 +2,8 @@
  * @Author: chenjie
  * @Date: 2022-07-22 14:05:14
  * @LastEditors: chenjie
- * @LastEditTime: 2022-07-24 22:03:21
- * @FilePath: \react-geekh5-ts\src\pages\Profile\Edit\index.tsx
+ * @LastEditTime: 2022-07-25 11:51:22
+ * @FilePath: /src/pages/Profile/Edit/index.tsx
  * @Description: Edit
  */
 import styles from './index.module.scss'
@@ -16,23 +16,32 @@ import { selectUserProfile, getuserProfile, updateUserProfile } from '@/store/fe
 import { useState } from 'react';
 import { useAppDispatch } from '@/store/hooks';
 const Item = List.Item
-
+type inputPopup = {
+  type: 'name' | 'intro'
+  visible: boolean
+  value: string
+}
 const ProfileEdit = () => {
   const dispatch = useAppDispatch()
-  const [inputVisible, setInputVisible] = useState(false)
+  const [inputPopup, setinputPopup] = useState<inputPopup>({ type: 'name', visible: false, value: '' })
   // 展示
-  const showInput = () => {
-    setInputVisible(true)
+  // inputPopup['type'] ts 中的索引查询类型
+  const showInput = (type: inputPopup['type'], value: inputPopup['value']) => {
+    setinputPopup({ type: type, visible: true, value: value ?? '' })
   }
 
   // 隐藏
   const hideInput = () => {
-    setInputVisible(false)
+    setinputPopup({ type: 'name', visible: false, value: '' })
   }
 
   // 修改
-  const updateName = async (name: string) => {
-    await dispatch(updateUserProfile({ name }))
+  const updateProfile = async (key: inputPopup['type'],value : string) => {
+    // { [type]:name } 属性名表达式
+    // 表示：可以通过一个 js 表达式 来作为对象的键
+    // 如果 type 为 name 那么值为：{name: ''}
+    // 如果 type 为 intro 那么值为：{intro: ''}
+    await dispatch(updateUserProfile({ [key]:value }))
     Toast.show({ content: '更新成功', duration: 100 })
     dispatch(getuserProfile())
     hideInput()
@@ -69,7 +78,7 @@ const ProfileEdit = () => {
             >
               头像
             </Item>
-            <Item arrow extra={state.name || '怎么吃不饱'} onClick={showInput}>
+            <Item arrow extra={state.name || '怎么吃不饱'} onClick={() => showInput('name', state.name)}>
               昵称
             </Item>
             <Item
@@ -79,6 +88,7 @@ const ProfileEdit = () => {
                   {state.intro || '未填写'}
                 </span>
               }
+              onClick={() => showInput('intro', state.intro)}
             >
               简介
             </Item>
@@ -106,8 +116,8 @@ const ProfileEdit = () => {
           <Button className="btn">退出登录</Button>
         </div>
       </div>
-      <Popup visible={inputVisible} >
-        <EditInput value={state.name} onClose={hideInput} updateName={updateName} />
+      <Popup destroyOnClose visible={inputPopup.visible} >
+        <EditInput type={inputPopup.type} value={inputPopup.value} onClose={hideInput} updateProfile={updateProfile} />
       </Popup>
 
     </div>
