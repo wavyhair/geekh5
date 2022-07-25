@@ -2,11 +2,13 @@
  * @Author: chenjie
  * @Date: 2022-07-10 18:32:23
  * @LastEditors: chenjie
- * @LastEditTime: 2022-07-22 14:59:35
+ * @LastEditTime: 2022-07-25 16:58:50
  * @FilePath: /src/types/data.d.ts
  * @Description: 
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
  */
+
+
 // token
 export type ToKen = {
     token: string;
@@ -43,5 +45,9 @@ export type UserProfile = {
     birthday: string;
     intro: string;
 }
+
+// 修改头像响应信息
+export type UserPhotoResponse = ApiResponse<{photo:string}>
+
 // 个人信息响应
 export type UserProfileResponse =ApiResponse<UserProfile>

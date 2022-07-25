@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-07-23 15:29:01
  * @LastEditors: chenjie
- * @LastEditTime: 2022-07-25 11:48:04
+ * @LastEditTime: 2022-07-25 15:05:08
  * @FilePath: /src/pages/Profile/Edit/components/EditInput/index.tsx
  * @Description: 
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -14,9 +14,9 @@ import styles from './index.module.scss'
 
 type Props = {
   onClose: () => void
-  value: string 
-  type: 'name' | 'intro'
-  updateProfile: (key:'name' | 'intro',value: string) => void
+  value: string
+  type: 'name' | 'intro' | 'gender' | 'photo' |''
+  updateProfile: (key: Props['type'], value: string) => void
 }
 const EditInput = ({ onClose, value, updateProfile, type }: Props) => {
   const [inputValue, setInputValue] = useState(value)
@@ -25,7 +25,7 @@ const EditInput = ({ onClose, value, updateProfile, type }: Props) => {
   }, [type])
   // 提交
   const onSave = () => {
-    updateProfile(type,inputValue)
+    updateProfile(type, inputValue)
   }
   return (
     <div className={styles.root}>
@@ -40,9 +40,9 @@ const EditInput = ({ onClose, value, updateProfile, type }: Props) => {
       <div className="edit-input-content">
         <h3> {inputType ? '昵称' : '简介'}</h3>
         {inputType ?
-         <div className="input-wrap">
-          <Input placeholder="请输入昵称" value={inputValue} onChange={setInputValue} />
-        </div> : <TextArea rows={3} maxLength={100} className='textarea' placeholder='请输入简介'value={inputValue} onChange={setInputValue}/>}
+          <div className="input-wrap">
+            <Input placeholder="请输入昵称" value={inputValue} onChange={setInputValue} />
+          </div> : <TextArea rows={3} maxLength={100} showCount className='textarea' placeholder='请输入简介' value={inputValue} onChange={setInputValue} />}
 
       </div>
     </div>

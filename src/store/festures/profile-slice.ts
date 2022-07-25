@@ -2,13 +2,13 @@
  * @Author: chenjie
  * @Date: 2022-07-19 20:54:23
  * @LastEditors: chenjie
- * @LastEditTime: 2022-07-24 22:02:52
- * @FilePath: \react-geekh5-ts\src\store\festures\profile-slice.ts
+ * @LastEditTime: 2022-07-25 17:16:39
+ * @FilePath: /src/store/festures/profile-slice.ts
  * @Description: profile-slice
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
  */
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import type { User, UserResponse, UserProfileResponse, UserProfile } from "@/types/data";
+import type { User, UserResponse, UserProfileResponse, UserProfile, UserPhotoResponse } from "@/types/data";
 import http from "@/utils/http";
 import { Toast } from "antd-mobile";
 import { RootState } from "..";
@@ -48,8 +48,17 @@ export const getuserProfile = createAsyncThunk('profile/getuserProfile', async (
 export const updateUserProfile = createAsyncThunk('profile/updateUserProfile', async (userProfile: Partial<UserProfile>) => {
     try {
         await http.patch('/user/profile', userProfile)
-        return userProfile
     } catch (e: any) {
+        throw Error(e.response.data.message)
+    }
+})
+
+// 修改头像
+export const updateUserPhoto = createAsyncThunk('profile/updateUserPhoto',async (data:FormData)=>{
+    try {
+        const res = await http.patch<UserPhotoResponse>('/user/photo', data)
+        return res.data.data.photo
+    } catch(e:any){
         throw Error(e.response.data.message)
     }
 })
@@ -81,6 +90,14 @@ export const profileSlice = createSlice({
                 }
             })
             .addCase(updateUserProfile.rejected, (state, e) => {
+                if (e.error.message) {
+                    Toast.show(e.error.message)
+                }
+            })
+            .addCase(updateUserPhoto.fulfilled,(state,{payload})=>{
+                state.userProfile.photo = payload
+            })
+            .addCase(updateUserPhoto.rejected, (state, e) => {
                 if (e.error.message) {
                     Toast.show(e.error.message)
                 }

@@ -1,31 +1,44 @@
-.root {
-  height: 100%;
-  padding: 8px 0;
-  background-color: #fff;
+.root
+{
+    height: 100%;
+    padding: 8px 0;
 
-  :global {
-    .list-item {
-      height: 50px;
-      line-height: 50px;
-      text-align: center;
-      font-size: 16px;
-      color: #333;
+    background-color: #fff;
 
-      &:active {
-        background-color: #f2f3f5;
-      }
+    :global
+    {
+        .list-item
+        {
+            font-size: 16px;
+            line-height: 50px;
 
-      &:last-child {
-        color: #a5a6ab;
+            height: 50px;
 
-        &::before {
-          content: ' ';
-          display: block;
-          height: 8px;
-          // width: 100%;
-          background-color: #f7f8fa;
+            text-align: center;
+
+            color: #333;
+
+            &:active
+            {
+                background-color: #f2f3f5;
+            }
+
+            &:last-child
+            {
+                color: #a5a6ab;
+
+                &::before
+                {
+                    display: block;
+
+                    height: 8px;
+
+                    content: ' ';
+                    // width: 100%;
+
+                    background-color: #f7f8fa;
+                }
+            }
         }
-      }
     }
-  }
 }

@@ -2,8 +2,8 @@
  * @Author: chenjie
  * @Date: 2022-07-10 18:28:51
  * @LastEditors: chenjie
- * @LastEditTime: 2022-07-13 20:34:47
- * @FilePath: \react-geekh5-ts\src\store\festures\login-slice.ts
+ * @LastEditTime: 2022-07-25 17:16:02
+ * @FilePath: /src/store/festures/login-slice.ts
  * @Description: login-slice
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
  */
