@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-07-10 18:28:51
  * @LastEditors: chenjie
- * @LastEditTime: 2022-07-25 17:16:02
+ * @LastEditTime: 2022-07-26 16:07:17
  * @FilePath: /src/store/festures/login-slice.ts
  * @Description: login-slice
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -10,7 +10,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import http from "@/utils/http";
 import type { ToKen,LoginResponse } from "@/types/data";
-import { setToken, getToken } from "@/utils/auth";
+import { setToken, getToken, clearToken } from "@/utils/auth";
 import { Toast } from "antd-mobile";
 
 enum API {
@@ -45,11 +45,16 @@ export const getCode = createAsyncThunk('login/getCode', async (mobile: string) 
         throw Error(e.response.data.message)
     }
 })
+
 export const loginSlice = createSlice({
     name: 'login',
     initialState,
     reducers: {
-
+        logout:(state)=>{
+            state.refresh_token = ''
+            state.token = ''
+            clearToken()
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -71,3 +76,4 @@ export const loginSlice = createSlice({
     }
 })
 export default loginSlice.reducer
+export const {logout} = loginSlice.actions

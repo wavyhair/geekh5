@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-07-23 15:29:01
  * @LastEditors: chenjie
- * @LastEditTime: 2022-07-25 15:05:08
+ * @LastEditTime: 2022-07-26 15:32:23
  * @FilePath: /src/pages/Profile/Edit/components/EditInput/index.tsx
  * @Description: 
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -15,7 +15,7 @@ import styles from './index.module.scss'
 type Props = {
   onClose: () => void
   value: string
-  type: 'name' | 'intro' | 'gender' | 'photo' |''
+  type: 'name' | 'intro' | 'gender' | 'photo' |'' | 'birthday'
   updateProfile: (key: Props['type'], value: string) => void
 }
 const EditInput = ({ onClose, value, updateProfile, type }: Props) => {

@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-07-22 14:05:14
  * @LastEditors: chenjie
- * @LastEditTime: 2022-07-25 17:17:30
+ * @LastEditTime: 2022-07-26 16:18:28
  * @FilePath: /src/pages/Profile/Edit/index.tsx
  * @Description: Edit
  */
@@ -10,15 +10,18 @@ import styles from './index.module.scss'
 import type { UserProfile } from '@/types/data';
 import EditInput from './components/EditInput';
 import { useInitialState } from '@/utils/use-initial-state';
-import { Button, List, DatePicker, NavBar, Popup, Toast } from 'antd-mobile'
+import { Button, List, DatePicker, NavBar, Popup, Toast, Dialog } from 'antd-mobile'
 import classNames from 'classnames'
 import { selectUserProfile, getuserProfile, updateUserProfile, updateUserPhoto } from '@/store/festures/profile-slice';
 import { useRef, useState } from 'react';
 import { useAppDispatch } from '@/store/hooks';
 import EditList from './components/EditList';
+import dayjs from 'dayjs';
+import { logout } from '@/store/festures/login-slice';
+import { useNavigate } from 'react-router-dom';
 const Item = List.Item
 type InputPopup = {
-  type: 'name' | 'intro' | 'gender' | 'photo' | ""
+  type: 'birthday' | 'name' | 'intro' | 'gender' | 'photo' | ""
   visible: boolean
   value: string
 }
@@ -28,8 +31,10 @@ type ListPopup = {
 }
 export default function ProfileEdit() {
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
   const [inputPopup, setinputPopup] = useState<InputPopup>({ type: 'name', visible: false, value: '' })
   const [listPopup, setListPopup] = useState<ListPopup>({ type: '', visible: false })
+  const [birthdayPopup, setBirthdayPopup] = useState(false)
   // 展示昵称和简介 popup
   // inputPopup['type'] ts 中的索引查询类型
   const showInput = (type: InputPopup['type'], value: InputPopup['value']) => {
@@ -39,6 +44,11 @@ export default function ProfileEdit() {
   // 展示头像和性别 popup
   const handleShow = (type: ListPopup['type']) => {
     setListPopup({ type: type, visible: true })
+  }
+
+  // 切换生日 popup
+  const toggleBirthdayPopup = (flag: boolean) => {
+    setBirthdayPopup(flag)
   }
 
   // 隐藏昵称和简介 popup
@@ -64,6 +74,11 @@ export default function ProfileEdit() {
     handleClose()
   }
 
+  // 修改时间
+  const updateBirthday = (value: Date) => {
+    const birthday = dayjs(value).format('YYYY-MM-DD')
+    updateProfile('birthday', birthday)
+  }
 
   // 修改
   const updateProfile = async (key: InputPopup['type'], value: string) => {
@@ -81,7 +96,44 @@ export default function ProfileEdit() {
 
     hideInput()
     handleClose()
+    toggleBirthdayPopup(false)
   }
+
+  // 退出
+  /**
+   *  不需要自定义样式的情况下，使用 Dialog.confirm 来弹窗确认即可
+   *  如果需要自定义弹窗按钮的样式，需要使用 Dialog.show 基础方法来实现
+   */
+  const onLogout = () => {
+    const handler = Dialog.show({
+      title: '温馨提示',
+      content: '亲，你确定退出吗？',
+      actions: [
+        [
+          {
+            key: 'cancel',
+            text: '取消',
+            onClick: () => {
+              handler.close();
+            },
+          },
+          {
+            key: 'confirm',
+            text: '退出',
+            onClick:()=>{
+              dispatch(logout())
+              handler.close();
+              navigate('/login')
+            },
+            style: {
+              color: 'var(--adm-color-weak)',
+            },
+          },
+        ],
+      ],
+    });
+  }
+
   const state: UserProfile = useInitialState(getuserProfile, selectUserProfile)
   return (
     <div className={styles.root}>
@@ -132,27 +184,17 @@ export default function ProfileEdit() {
           </List>
 
           <List className="profile-list">
-            <Item arrow  extra={state.gender === 0 ? '男' : '女'} onClick={() => handleShow('gender')}  >
+            <Item arrow extra={state.gender === 0 ? '男' : '女'} onClick={() => handleShow('gender')}  >
               性别
             </Item>
-            <Item arrow extra={state.birthday}>
+            <Item arrow extra={state.birthday} onClick={() => toggleBirthdayPopup(true)}>
               生日
             </Item>
           </List>
-
-          <DatePicker
-            visible={false}
-            value={new Date()}
-            title="选择年月日"
-            min={new Date(1900, 0, 1, 0, 0, 0)}
-            max={new Date()}
-          />
-
-
         </div>
 
         <div className="logout">
-          <Button className="btn">退出登录</Button>
+          <Button className="btn" onClick={onLogout}>退出登录</Button>
         </div>
       </div>
       {/* 修改昵称和简介 */}
@@ -165,6 +207,16 @@ export default function ProfileEdit() {
       </Popup>
       {/* 创建 input[type=file] 标签*/}
       <input type="file" ref={fileRef} hidden accept='image/*' onChange={fileChange} />
+      <DatePicker
+        visible={birthdayPopup}
+        value={new Date(state.birthday)}
+        title="选择年月日"
+        onCancel={() => toggleBirthdayPopup(false)}
+        onConfirm={updateBirthday}
+        min={new Date(1900, 0, 1, 0, 0, 0)}
+        max={new Date()}
+      />
+
     </div>
   )
 }
