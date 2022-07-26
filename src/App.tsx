@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-07-05 20:28:09
  * @LastEditors: chenjie
- * @LastEditTime: 2022-07-22 14:18:09
+ * @LastEditTime: 2022-07-26 17:29:49
  * @FilePath: /src/App.tsx
  * @Description: App
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -18,6 +18,7 @@ import Question from './pages/Question';
 import Video from './pages/Video';
 import Profile from './pages/Profile';
 import ProfileEdit from '@/pages/Profile/Edit'
+import AuthRoute from './components/AuthRoute';
 function App() {
   return (
     <div className="App">
@@ -31,7 +32,8 @@ function App() {
             <Route path='/home/Profile' element={<Profile />} />
           </Route>
           <Route path="/login" element={<Login />} />
-          <Route path="/profile/edit" element={<ProfileEdit />} />
+          <Route></Route>
+          <Route path="/profile/edit" element={<AuthRoute element={<ProfileEdit />}></AuthRoute>}/>
         </Routes>
       </Router>
     </div>
