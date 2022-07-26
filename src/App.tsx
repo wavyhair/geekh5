@@ -2,8 +2,8 @@
  * @Author: chenjie
  * @Date: 2022-07-05 20:28:09
  * @LastEditors: chenjie
- * @LastEditTime: 2022-07-26 17:29:49
- * @FilePath: /src/App.tsx
+ * @LastEditTime: 2022-07-26 20:07:15
+ * @FilePath: \react-geekh5-ts\src\App.tsx
  * @Description: App
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
  */
@@ -28,12 +28,12 @@ function App() {
           <Route path="/home" element={<Layout />} >
             <Route path='/home/index' element={<Home />} />
             <Route path='/home/question' element={<Question />} />
-            <Route path='/home/video' element={<Video />}/>
+            <Route path='/home/video' element={<Video />} />
             <Route path='/home/Profile' element={<Profile />} />
           </Route>
           <Route path="/login" element={<Login />} />
           <Route></Route>
-          <Route path="/profile/edit" element={<AuthRoute element={<ProfileEdit />}></AuthRoute>}/>
+          <Route path="/profile/edit" element={<AuthRoute element={<ProfileEdit />}></AuthRoute>} />
         </Routes>
       </Router>
     </div>

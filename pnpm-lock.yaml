@@ -18,6 +18,7 @@ specifiers:
   antd-mobile: ^5.18.0
   axios: ^0.27.2
   classnames: ^2.3.1
+  dayjs: ^1.11.4
   eslint-plugin-react: ^7.30.1
   history: ^5.3.0
   postcss-px-to-viewport: ^1.1.1
@@ -45,6 +46,7 @@ dependencies:
   antd-mobile: registry.npmmirror.com/antd-mobile/5.18.0_biqbaboplfbrettd7655fr4n2y
   axios: registry.npmmirror.com/axios/0.27.2
   classnames: registry.npmmirror.com/classnames/2.3.1
+  dayjs: registry.npmmirror.com/dayjs/1.11.4
   history: registry.npmmirror.com/history/5.3.0
   postcss-px-to-viewport: registry.npmmirror.com/postcss-px-to-viewport/1.1.1
   react: registry.npmmirror.com/react/18.2.0
@@ -3873,7 +3875,7 @@ packages:
     dependencies:
       '@types/js-cookie': registry.npmmirror.com/@types/js-cookie/2.2.7
       ahooks-v3-count: registry.npmmirror.com/ahooks-v3-count/1.0.0
-      dayjs: registry.npmmirror.com/dayjs/1.11.3
+      dayjs: registry.npmmirror.com/dayjs/1.11.4
       intersection-observer: registry.npmmirror.com/intersection-observer/0.12.2
       js-cookie: registry.npmmirror.com/js-cookie/2.2.1
       lodash: registry.npmmirror.com/lodash/4.17.21
@@ -4037,7 +4039,7 @@ packages:
       antd-mobile-v5-count: registry.npmmirror.com/antd-mobile-v5-count/1.0.1
       big.js: registry.npmmirror.com/big.js/6.2.0
       classnames: registry.npmmirror.com/classnames/2.3.1
-      dayjs: registry.npmmirror.com/dayjs/1.11.3
+      dayjs: registry.npmmirror.com/dayjs/1.11.4
       lodash: registry.npmmirror.com/lodash/4.17.21
       rc-field-form: registry.npmmirror.com/rc-field-form/1.27.0_biqbaboplfbrettd7655fr4n2y
       react: registry.npmmirror.com/react/18.2.0
@@ -6188,10 +6190,10 @@ packages:
       whatwg-url: registry.npmmirror.com/whatwg-url/8.7.0
     dev: false
 
-  registry.npmmirror.com/dayjs/1.11.3:
-    resolution: {integrity: sha512-xxwlswWOlGhzgQ4TKzASQkUhqERI3egRNqgV4ScR8wlANA/A9tZ7miXa44vTTKEq5l7vWoL5G57bG3zA+Kow0A==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/dayjs/-/dayjs-1.11.3.tgz}
+  registry.npmmirror.com/dayjs/1.11.4:
+    resolution: {integrity: sha512-Zj/lPM5hOvQ1Bf7uAvewDaUcsJoI6JmNqmHhHl3nyumwe0XHwt8sWdOVAPACJzCebL8gQCi+K49w7iKWnGwX9g==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/dayjs/-/dayjs-1.11.4.tgz}
     name: dayjs
-    version: 1.11.3
+    version: 1.11.4
     dev: false
 
   registry.npmmirror.com/debug/2.6.9:
