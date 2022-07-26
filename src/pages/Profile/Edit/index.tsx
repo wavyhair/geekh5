@@ -132,7 +132,7 @@ export default function ProfileEdit() {
           </List>
 
           <List className="profile-list">
-            <Item arrow extra={state.gender === 0 ? '男' : '女'} onClick={() => handleShow('gender')}  >
+            <Item arrow  extra={state.gender === 0 ? '男' : '女'} onClick={() => handleShow('gender')}  >
               性别
             </Item>
             <Item arrow extra={state.birthday}>
@@ -156,11 +156,11 @@ export default function ProfileEdit() {
         </div>
       </div>
       {/* 修改昵称和简介 */}
-      <Popup destroyOnClose visible={inputPopup.visible} >
+      <Popup destroyOnClose onMaskClick={hideInput} visible={inputPopup.visible} >
         <EditInput type={inputPopup.type} value={inputPopup.value} onClose={hideInput} updateProfile={updateProfile} />
       </Popup>
       {/*  修改照片和性别 */}
-      <Popup className='listPopup' closeOnMaskClick destroyOnClose visible={listPopup.visible}>
+      <Popup className='listPopup' onMaskClick={handleClose} destroyOnClose visible={listPopup.visible}>
         <EditList type={listPopup.type} onClose={handleClose} updateProfile={updateProfile} />
       </Popup>
       {/* 创建 input[type=file] 标签*/}
