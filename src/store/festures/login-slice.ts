@@ -2,14 +2,14 @@
  * @Author: chenjie
  * @Date: 2022-07-10 18:28:51
  * @LastEditors: chenjie
- * @LastEditTime: 2022-07-26 16:07:17
- * @FilePath: /src/store/festures/login-slice.ts
+ * @LastEditTime: 2022-07-27 22:38:15
+ * @FilePath: \react-geekh5-ts\src\store\festures\login-slice.ts
  * @Description: login-slice
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
  */
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import http from "@/utils/http";
-import type { ToKen,LoginResponse } from "@/types/data";
+import type { ToKen, LoginResponse } from "@/types/data";
 import { setToken, getToken, clearToken } from "@/utils/auth";
 import { Toast } from "antd-mobile";
 
@@ -29,6 +29,7 @@ const initialState: ToKen = {
 }
 // 登录
 export const login = createAsyncThunk('login/login', async (values: LoginParams) => {
+    console.log('调用了')
     try {
         const res = await http.post<LoginResponse>(API.Login, values)
         return res.data
@@ -50,8 +51,7 @@ export const loginSlice = createSlice({
     name: 'login',
     initialState,
     reducers: {
-        logout:(state)=>{
-            state.refresh_token = ''
+        logout: (state) => {
             state.token = ''
             clearToken()
         }
@@ -76,4 +76,4 @@ export const loginSlice = createSlice({
     }
 })
 export default loginSlice.reducer
-export const {logout} = loginSlice.actions
+export const { logout } = loginSlice.actions

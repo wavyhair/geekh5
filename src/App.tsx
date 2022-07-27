@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-07-05 20:28:09
  * @LastEditors: chenjie
- * @LastEditTime: 2022-07-26 20:07:15
+ * @LastEditTime: 2022-07-27 22:29:33
  * @FilePath: \react-geekh5-ts\src\App.tsx
  * @Description: App
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -32,7 +32,6 @@ function App() {
             <Route path='/home/Profile' element={<Profile />} />
           </Route>
           <Route path="/login" element={<Login />} />
-          <Route></Route>
           <Route path="/profile/edit" element={<AuthRoute element={<ProfileEdit />}></AuthRoute>} />
         </Routes>
       </Router>

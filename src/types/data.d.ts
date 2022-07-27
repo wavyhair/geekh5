@@ -26,8 +26,8 @@ export type User = {
 }
 // 响应类型
 type ApiResponse<Data> = {
-    message:string;
-    data:Data
+    message: string;
+    data: Data
 }
 // 登录
 export type LoginResponse = ApiResponse<ToKen>
@@ -47,17 +47,17 @@ export type UserProfile = {
 }
 
 export type Location = {
-    hash:string
-    key:string
-    pathname:string
-    search:string
-    state:{
-      from :string
+    hash: string
+    key: string
+    pathname: string
+    search: string
+    state: {
+        from: string
     }
-  }
+}
 
 // 修改头像响应信息
-export type UserPhotoResponse = ApiResponse<{photo:string}>
+export type UserPhotoResponse = ApiResponse<{ photo: string }>
 
 // 个人信息响应
-export type UserProfileResponse =ApiResponse<UserProfile>
+export type UserProfileResponse = ApiResponse<UserProfile>
