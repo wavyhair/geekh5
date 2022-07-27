@@ -2,8 +2,8 @@
  * @Author: chenjie
  * @Date: 2022-07-05 21:00:57
  * @LastEditors: chenjie
- * @LastEditTime: 2022-07-27 13:36:41
- * @FilePath: /src/pages/Login/index.tsx
+ * @LastEditTime: 2022-07-27 20:14:02
+ * @FilePath: \react-geekh5-ts\src\pages\Login\index.tsx
  * @Description: Login
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
  */
@@ -15,7 +15,7 @@ import styles from './index.module.scss';
 import { useEffect, useRef, useState } from 'react';
 import { InputRef } from 'antd-mobile/es/components/input';
 import { useLocation } from 'react-router-dom';
-import { Location } from '@/types/data';
+import type { Location } from '@/types/data';
 
 type LoginFrom = {
   mobile: string;
