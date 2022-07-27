@@ -2,12 +2,12 @@
  * @Author: chenjie
  * @Date: 2022-07-10 18:28:51
  * @LastEditors: chenjie
- * @LastEditTime: 2022-07-27 22:38:15
+ * @LastEditTime: 2022-07-27 23:21:09
  * @FilePath: \react-geekh5-ts\src\store\festures\login-slice.ts
  * @Description: login-slice
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
  */
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import http from "@/utils/http";
 import type { ToKen, LoginResponse } from "@/types/data";
 import { setToken, getToken, clearToken } from "@/utils/auth";
@@ -29,7 +29,6 @@ const initialState: ToKen = {
 }
 // 登录
 export const login = createAsyncThunk('login/login', async (values: LoginParams) => {
-    console.log('调用了')
     try {
         const res = await http.post<LoginResponse>(API.Login, values)
         return res.data
@@ -54,6 +53,12 @@ export const loginSlice = createSlice({
         logout: (state) => {
             state.token = ''
             clearToken()
+        },
+        // 因为不清楚在非 react components 环境下如何调用 thunk action 所以写了一个普通的 reducer
+        refreshToken: (state, action: PayloadAction<ToKen>) => {
+            state.token = action.payload.token
+            state.refresh_token = action.payload.refresh_token
+            console.log('state', state.refresh_token, state.token)
         }
     },
     extraReducers: (builder) => {
@@ -76,4 +81,4 @@ export const loginSlice = createSlice({
     }
 })
 export default loginSlice.reducer
-export const { logout } = loginSlice.actions
+export const { logout, refreshToken } = loginSlice.actions

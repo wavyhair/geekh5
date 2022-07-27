@@ -2,8 +2,8 @@
  * @Author: chenjie
  * @Date: 2022-07-22 14:05:14
  * @LastEditors: chenjie
- * @LastEditTime: 2022-07-26 16:18:28
- * @FilePath: /src/pages/Profile/Edit/index.tsx
+ * @LastEditTime: 2022-07-27 23:19:08
+ * @FilePath: \react-geekh5-ts\src\pages\Profile\Edit\index.tsx
  * @Description: Edit
  */
 import styles from './index.module.scss'
@@ -120,7 +120,7 @@ export default function ProfileEdit() {
           {
             key: 'confirm',
             text: '退出',
-            onClick:()=>{
+            onClick: () => {
               dispatch(logout())
               handler.close();
               navigate('/login')
@@ -140,6 +140,7 @@ export default function ProfileEdit() {
       <div className="content">
         {/* 标题 */}
         <NavBar
+          onBack={() => navigate('/home/profile')}
           style={{
             '--border-bottom': '1px solid #F0F0F0'
           }}

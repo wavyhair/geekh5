@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-06-17 22:01:05
  * @LastEditors: chenjie
- * @LastEditTime: 2022-07-27 22:39:46
+ * @LastEditTime: 2022-07-27 23:25:38
  * @FilePath: \react-geekh5-ts\src\utils\http.ts
  * @Description:
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -12,7 +12,7 @@ import store from '@/store'
 import customHistory from '@/utils/history'
 import { Toast } from 'antd-mobile'
 import { setToken } from './auth'
-import { login, logout } from '@/store/festures/login-slice'
+import { login, logout, refreshToken } from '@/store/festures/login-slice'
 const baseURL = process.env.REACT_APP_URL
 const http = axios.create({
   baseURL,
@@ -56,8 +56,9 @@ http.interceptors.response.use(
           refresh_token
         }
         setToken(tokens)
-        // store.dispatch({ type: 'login/login', payload: tokens })
-        // return http(e.config)
+        store.dispatch(refreshToken(tokens))
+        console.log('store.getState()', store.getState())
+        return http(e.config)
       } catch (e) {
         store.dispatch(logout)
         Toast.show({ content: '登录失效', duration: 1000 })
