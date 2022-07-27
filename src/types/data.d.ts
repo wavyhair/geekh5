@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-07-10 18:32:23
  * @LastEditors: chenjie
- * @LastEditTime: 2022-07-25 16:58:50
+ * @LastEditTime: 2022-07-27 13:25:00
  * @FilePath: /src/types/data.d.ts
  * @Description: 
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -45,6 +45,16 @@ export type UserProfile = {
     birthday: string;
     intro: string;
 }
+
+export type Location = {
+    hash:string
+    key:string
+    pathname:string
+    search:string
+    state:{
+      from :string
+    }
+  }
 
 // 修改头像响应信息
 export type UserPhotoResponse = ApiResponse<{photo:string}>
