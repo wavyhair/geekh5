@@ -2,8 +2,8 @@
  * @Author: chenjie
  * @Date: 2022-07-10 18:32:23
  * @LastEditors: chenjie
- * @LastEditTime: 2022-07-27 13:25:00
- * @FilePath: /src/types/data.d.ts
+ * @LastEditTime: 2022-07-30 20:32:21
+ * @FilePath: \react-geekh5-ts\src\types\data.d.ts
  * @Description: 
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
  */
@@ -46,6 +46,7 @@ export type UserProfile = {
     intro: string;
 }
 
+// useLocation 的返回值
 export type Location = {
     hash: string
     key: string
@@ -56,8 +57,23 @@ export type Location = {
     }
 }
 
+// 频道数据
+export type Channel = {
+    id: number
+    name: string
+}
+
+export type UserChannel = {
+    channels: Channel[]
+}
+
+
 // 修改头像响应信息
 export type UserPhotoResponse = ApiResponse<{ photo: string }>
 
 // 个人信息响应
 export type UserProfileResponse = ApiResponse<UserProfile>
+
+// 获取频道数据相应
+export type UserChannelResponse = ApiResponse<UserChannel>
+

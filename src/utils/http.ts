@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-06-17 22:01:05
  * @LastEditors: chenjie
- * @LastEditTime: 2022-07-30 10:03:58
+ * @LastEditTime: 2022-07-30 20:31:17
  * @FilePath: \react-geekh5-ts\src\utils\http.ts
  * @Description:
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -12,7 +12,7 @@ import store from '@/store'
 import customHistory from '@/utils/history'
 import { Toast } from 'antd-mobile'
 import { setToken } from './auth'
-import { login, logout, refreshToken } from '@/store/festures/login-slice'
+import { logout, refreshToken } from '@/store/festures/login-slice'
 const baseURL = process.env.REACT_APP_URL
 const http = axios.create({
   baseURL,
@@ -57,7 +57,6 @@ http.interceptors.response.use(
         }
         setToken(tokens)
         store.dispatch(refreshToken(tokens))
-        console.log('store.getState()', store.getState())
         return http(e.config)
       } catch (e) {
         store.dispatch(logout)
@@ -74,8 +73,6 @@ http.interceptors.response.use(
           { from: customHistory.location.pathname }
         )
       }
-
-
     }
     return Promise.reject(e)
   }

@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-07-05 21:00:57
  * @LastEditors: chenjie
- * @LastEditTime: 2022-07-30 09:46:42
+ * @LastEditTime: 2022-07-30 11:48:30
  * @FilePath: \react-geekh5-ts\src\pages\Login\index.tsx
  * @Description: Login
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -34,7 +34,6 @@ export default function Login() {
   }
 
   const location = useLocation() as Location
-  console.log('location.state?.from', location.state?.from)
   // 登录
   const onFinish = async (values: LoginFrom) => {
     await dispatch(login(values))
