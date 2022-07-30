@@ -2,8 +2,8 @@
  * @Author: chenjie
  * @Date: 2022-07-19 20:54:23
  * @LastEditors: chenjie
- * @LastEditTime: 2022-07-25 17:16:39
- * @FilePath: /src/store/festures/profile-slice.ts
+ * @LastEditTime: 2022-07-30 09:57:42
+ * @FilePath: \react-geekh5-ts\src\store\festures\profile-slice.ts
  * @Description: profile-slice
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
  */
@@ -54,11 +54,11 @@ export const updateUserProfile = createAsyncThunk('profile/updateUserProfile', a
 })
 
 // 修改头像
-export const updateUserPhoto = createAsyncThunk('profile/updateUserPhoto',async (data:FormData)=>{
+export const updateUserPhoto = createAsyncThunk('profile/updateUserPhoto', async (data: FormData) => {
     try {
         const res = await http.patch<UserPhotoResponse>('/user/photo', data)
         return res.data.data.photo
-    } catch(e:any){
+    } catch (e: any) {
         throw Error(e.response.data.message)
     }
 })
@@ -94,7 +94,7 @@ export const profileSlice = createSlice({
                     Toast.show(e.error.message)
                 }
             })
-            .addCase(updateUserPhoto.fulfilled,(state,{payload})=>{
+            .addCase(updateUserPhoto.fulfilled, (state, { payload }) => {
                 state.userProfile.photo = payload
             })
             .addCase(updateUserPhoto.rejected, (state, e) => {
