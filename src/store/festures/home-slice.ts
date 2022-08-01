@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-07-30 18:34:19
  * @LastEditors: chenjie
- * @LastEditTime: 2022-08-01 20:39:32
+ * @LastEditTime: 2022-08-01 20:42:26
  * @FilePath: \react-geekh5-ts\src\store\festures\home-slice.ts
  * @Description: homeSlice
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -90,8 +90,8 @@ export const homeSlice = createSlice({
         })
             .addCase(getAllChannel.fulfilled, (state, { payload }) => {
                 // 在redux 工具包中，状态打印为代理对象。但是有基于 redux-toolkit 的函数 dosc current您可以使用它在 reducer 操作中打印您的状态
-                const userChannel = current(state.userChannel)
-                const restChannels = differenceBy(payload, userChannel, 'id')
+                console.log(' 不加 current 打印出来的是代理对象 加了之后打印的是原来的状态', current(state.userChannel))
+                const restChannels = differenceBy(payload, state.userChannel, 'id')
                 state.restChannel = restChannels
             })
             .addCase(delChannel.fulfilled, (state, { payload }) => {
