@@ -57,14 +57,19 @@ export type Location = {
     }
 }
 
-// 频道数据
+// 频道数据类型
 export type Channel = {
     id: number
     name: string
 }
 
+// 用户频道数据
 export type UserChannel = {
     channels: Channel[]
+}
+// 所有频道数据
+export type AllChannles = {
+    channels:Channel[]
 }
 
 
@@ -74,6 +79,8 @@ export type UserPhotoResponse = ApiResponse<{ photo: string }>
 // 个人信息响应
 export type UserProfileResponse = ApiResponse<UserProfile>
 
-// 获取频道数据相应
+// 用户频道数据响应
 export type UserChannelResponse = ApiResponse<UserChannel>
 
+// 所有频道响应数据
+export type AllChannelsResponse = ApiResponse<AllChannles>
