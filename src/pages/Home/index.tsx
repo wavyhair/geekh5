@@ -33,7 +33,7 @@ export default function Home() {
                 <Tabs className="tabs" activeLineMode="fixed" activeKey={channelActiveKeu} onChange={(id)=>dispatch(changeTab(id+''))}>
                     {channels.map((item) => (
                         <Tabs.Tab title={item.name} key={item.id}>
-                            <ArticleList />
+                            <ArticleList channel_id={item.id}/>
                         </Tabs.Tab>
                     ))}
                 </Tabs>

@@ -9,28 +9,39 @@
 import ArticleItem from '@/components/ArticleItem'
 
 import styles from './index.module.scss'
-import { InfiniteScroll, List } from 'antd-mobile'
-import { useState } from 'react'
-import { mockRequest } from './mock-request'
-const ArticleList = () => {
-  const [data, setData] = useState<string[]>([])
-  const [hasMore, setHasMore] = useState(true)
-  async function loadMore() {
-    const append = await mockRequest()
-    setData(val => [...val, ...append])
-    setHasMore(append.length > 0)
-  }
-  return (
-    <div className={styles.root}>
-      {/* 文章列表中的每一项 */}
-      <div className="article-item">
-        <ArticleItem type={1} />
-      </div>
-    <InfiniteScroll loadMore={loadMore} hasMore={hasMore} />
+import {InfiniteScroll, List} from 'antd-mobile'
+import {useState} from 'react'
+import {useAppDispatch, useAppSelector} from "@/store/hooks";
+import {getArticleList, selectArticleList} from "@/store/festures/home-slice";
 
-    </div>
-   
-  )
+type Props = {
+    channel_id: number
+}
+const ArticleList = ({channel_id}: Props) => {
+    const dispatch = useAppDispatch()
+    const [hasMore, setHasMore] = useState(true)
+    const channelArticles = useAppSelector(selectArticleList)
+    // 此处 频道对应的 文章列表数据 可能是不存在的 所以此处设置默认值
+    const currentChannelArticle = channelArticles[channel_id] ?? {pre_timestamp: Date.now()+'', results: []}
+    const {pre_timestamp, results} = currentChannelArticle
+
+    async function loadMore() {
+        await dispatch(getArticleList({channel_id, pre_timestamp}))
+    }
+
+    return (
+        <div className={styles.root}>
+            {/* 文章列表中的每一项 */}
+            {results.map((item) =>
+                <div  className="article-item" key={item.art_id}>
+                <ArticleItem type={1}/>
+            </div>)}
+
+            <InfiniteScroll loadMore={loadMore} hasMore={hasMore}/>
+
+        </div>
+
+    )
 }
 
 export default ArticleList

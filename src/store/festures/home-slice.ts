@@ -7,11 +7,11 @@
  * @Description: homeSlice
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
  */
-import { getToken } from "@/utils/auth";
+import {getToken} from "@/utils/auth";
 import http from "@/utils/http";
-import type { AllChannelsResponse, Articles, ArticlesResponse, Channel, UserChannelResponse } from "@/types/data";
-import { createAsyncThunk, createSlice, current, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "..";
+import type {AllChannelsResponse, Articles, ArticlesResponse, Channel, UserChannelResponse} from "@/types/data";
+import {createAsyncThunk, createSlice, current, PayloadAction} from "@reduxjs/toolkit";
+import {RootState} from "..";
 import differenceBy from 'lodash/differenceBy'
 import sortBy from "lodash/sortBy";
 
@@ -19,7 +19,7 @@ enum API {
     getUserChannel = '/user/channels',
     getAllChannel = 'channels',
     delChannel = '/user/channels/',
-    addChannel = '/user/channels' ,
+    addChannel = '/user/channels',
     getArticleList = '/articles'
 }
 
@@ -69,9 +69,9 @@ export const delChannel = createAsyncThunk('home/delChannel', async (channel: Ch
 })
 
 // 添加频道
-export const addChannel = createAsyncThunk('home/addChannle',(channel: Channel)=>{
-    if(getToken().token){
-        http.patch(API.addChannel,{channels:[channel]})
+export const addChannel = createAsyncThunk('home/addChannle', (channel: Channel) => {
+    if (getToken().token) {
+        http.patch(API.addChannel, {channels: [channel]})
         return channel
     } else {
         return channel
@@ -79,29 +79,34 @@ export const addChannel = createAsyncThunk('home/addChannle',(channel: Channel)=
 })
 
 type ArticleType = {
-    channel_id:number
-    timestamp:string
+    channel_id: number
+    pre_timestamp: string
 }
 
 // 获取文章
-export const getArticleList = createAsyncThunk('home/getArticleList',(obj:ArticleType)=>{
-    const res = http.get<ArticlesResponse>(API.getArticleList,{params:{channee_id:obj.channel_id,timestamp:obj.timestamp}})
-    
+export const getArticleList = createAsyncThunk('home/getArticleList', async (obj: ArticleType) => {
+    const res = await http.get<ArticlesResponse>(API.getArticleList, {
+        params: {
+            channel_id: obj.channel_id,
+            timestamp: obj.pre_timestamp
+        }
+    })
+    return {channelId: obj.channel_id, data: res.data.data}
 })
 
 type HomeState = {
     userChannel: Channel[]
     restChannel: Channel[]
     channelActiveKey: string
-    channelArticle:{
-        [key:number]:Articles
+    channelArticle: {
+        [key: number]: Articles
     }
 }
 const initialState: HomeState = {
     userChannel: [],
     restChannel: [],
     channelActiveKey: '',
-    channelArticle:{}
+    channelArticle: {} // 所有频道的文章列表数据
 }
 export const homeSlice = createSlice({
     name: 'home',
@@ -112,30 +117,37 @@ export const homeSlice = createSlice({
         }
     },
     extraReducers: (buider) => {
-        buider.addCase(getUserChannel.fulfilled, (state, { payload }) => {
+        buider.addCase(getUserChannel.fulfilled, (state, {payload}) => {
             state.userChannel = payload
             state.channelActiveKey = payload[0].id + ''
         })
-            .addCase(getAllChannel.fulfilled, (state, { payload }) => {
+            .addCase(getAllChannel.fulfilled, (state, {payload}) => {
                 // 在redux 工具包中，状态打印为代理对象。但是有基于 redux-toolkit 的函数 dosc current您可以使用它在 reducer 操作中打印您的状态
                 console.log(' 不加 current 打印出来的是代理对象 加了之后打印的是原来的状态', current(state.userChannel))
                 const restChannels = differenceBy(payload, state.userChannel, 'id')
                 state.restChannel = restChannels
             })
-            .addCase(delChannel.fulfilled, (state, { payload }) => {
+            .addCase(delChannel.fulfilled, (state, {payload}) => {
                 state.userChannel = state.userChannel.filter(item => item.id !== payload?.id)
                 state.restChannel = sortBy([...state.restChannel, payload], 'id') as Channel[]
                 localStorage.setItem(CHANNEL_KEY, JSON.stringify(state.userChannel))
             })
-            .addCase(addChannel.fulfilled,(state,{payload})=>{
-                state.userChannel = [...state.userChannel,payload]
-                state.restChannel = state.restChannel.filter(item=>item.id!==payload.id)
+            .addCase(addChannel.fulfilled, (state, {payload}) => {
+                state.userChannel = [...state.userChannel, payload]
+                state.restChannel = state.restChannel.filter(item => item.id !== payload.id)
                 localStorage.setItem(CHANNEL_KEY, JSON.stringify(state.userChannel))
+            })
+            .addCase(getArticleList.fulfilled, (state, {payload}) => {
+                const {channelId, data: {pre_timestamp, results}} = payload
+                const currentArticles = state.channelArticle[channelId] ?? {pre_timestamp: Date.now(), results: []}
+                state.channelArticle[channelId].pre_timestamp = currentArticles.pre_timestamp
+                state.channelArticle[channelId].results = [...currentArticles.results, ...results]
             })
     }
 })
 export default homeSlice.reducer
-export const { changeTab, } = homeSlice.actions
+export const {changeTab,} = homeSlice.actions
 export const selectChannels = (state: RootState) => state.home.userChannel
 export const selectRestChannels = (state: RootState) => state.home.restChannel
 export const selectChannelActiveKey = (state: RootState) => state.home.channelActiveKey
+export const selectArticleList = (state: RootState) => state.home.channelArticle
