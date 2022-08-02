@@ -2,8 +2,8 @@
  * @Author: chenjie
  * @Date: 2022-07-10 18:32:23
  * @LastEditors: chenjie
- * @LastEditTime: 2022-07-30 20:32:21
- * @FilePath: \react-geekh5-ts\src\types\data.d.ts
+ * @LastEditTime: 2022-08-02 16:54:33
+ * @FilePath: /src/types/data.d.ts
  * @Description: 
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
  */
@@ -57,6 +57,23 @@ export type Location = {
     }
 }
 
+// 文章数据
+export type Articles = {
+    pre_timestamp: string;
+    results: {
+      art_id: string;
+      aut_id: string;
+      aut_name: string;
+      comm_count: number;
+      cover: {
+        type: number;
+        images: string[];
+      };
+      pubdate: string;
+      title: string;
+    }[];
+  };
+
 // 频道数据类型
 export type Channel = {
     id: number
@@ -84,3 +101,6 @@ export type UserChannelResponse = ApiResponse<UserChannel>
 
 // 所有频道响应数据
 export type AllChannelsResponse = ApiResponse<AllChannles>
+
+// 文章响应数据
+export type ArticlesResponse = ApiResponse<Articles>

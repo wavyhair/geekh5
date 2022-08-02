@@ -2,8 +2,8 @@
  * @Author: chenjie
  * @Date: 2022-07-19 18:55:06
  * @LastEditors: chenjie
- * @LastEditTime: 2022-08-01 16:00:00
- * @FilePath: \react-geekh5-ts\src\pages\Home\index.tsx
+ * @LastEditTime: 2022-08-02 16:29:51
+ * @FilePath: /src/pages/Home/index.tsx
  * @Description: Home
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
  */
@@ -19,6 +19,7 @@ import styles from './index.module.scss'
 import {useState} from "react";
 import Channels from "./components/Channels";
 import {useAppDispatch, useAppSelector} from "@/store/hooks";
+import ArticleList from "./components/ArticleList";
 
 export default function Home() {
     const dispatch = useAppDispatch()
@@ -32,7 +33,7 @@ export default function Home() {
                 <Tabs className="tabs" activeLineMode="fixed" activeKey={channelActiveKeu} onChange={(id)=>dispatch(changeTab(id+''))}>
                     {channels.map((item) => (
                         <Tabs.Tab title={item.name} key={item.id}>
-                            推荐频道的内容
+                            <ArticleList />
                         </Tabs.Tab>
                     ))}
                 </Tabs>

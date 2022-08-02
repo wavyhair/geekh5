@@ -2,25 +2,25 @@
  * @Author: chenjie
  * @Date: 2022-07-30 18:34:19
  * @LastEditors: chenjie
- * @LastEditTime: 2022-08-02 16:19:32
+ * @LastEditTime: 2022-08-02 17:33:17
  * @FilePath: /src/store/festures/home-slice.ts
  * @Description: homeSlice
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
  */
 import { getToken } from "@/utils/auth";
 import http from "@/utils/http";
-import type { AllChannelsResponse, Channel, UserChannelResponse } from "@/types/data";
+import type { AllChannelsResponse, Articles, ArticlesResponse, Channel, UserChannelResponse } from "@/types/data";
 import { createAsyncThunk, createSlice, current, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "..";
 import differenceBy from 'lodash/differenceBy'
 import sortBy from "lodash/sortBy";
-import exp from "constants";
 
 enum API {
     getUserChannel = '/user/channels',
     getAllChannel = 'channels',
     delChannel = '/user/channels/',
-    addChannel = '/user/channels'
+    addChannel = '/user/channels' ,
+    getArticleList = '/articles'
 }
 
 const CHANNEL_KEY = 'GEEK_CHANNEL_KEY'
@@ -78,15 +78,30 @@ export const addChannel = createAsyncThunk('home/addChannle',(channel: Channel)=
     }
 })
 
+type ArticleType = {
+    channel_id:number
+    timestamp:string
+}
+
+// 获取文章
+export const getArticleList = createAsyncThunk('home/getArticleList',(obj:ArticleType)=>{
+    const res = http.get<ArticlesResponse>(API.getArticleList,{params:{channee_id:obj.channel_id,timestamp:obj.timestamp}})
+    
+})
+
 type HomeState = {
     userChannel: Channel[]
     restChannel: Channel[]
     channelActiveKey: string
+    channelArticle:{
+        [key:number]:Articles
+    }
 }
 const initialState: HomeState = {
     userChannel: [],
     restChannel: [],
     channelActiveKey: '',
+    channelArticle:{}
 }
 export const homeSlice = createSlice({
     name: 'home',
