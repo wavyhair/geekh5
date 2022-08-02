@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-08-01 14:51:11
  * @LastEditors: chenjie
- * @LastEditTime: 2022-08-02 09:47:26
+ * @LastEditTime: 2022-08-02 10:04:34
  * @Description: Channels
  */
 import classnames from 'classnames'
@@ -15,7 +15,7 @@ import {
     selectChannels,
     selectRestChannels,
     changeTab,
-    delChannel
+    delChannel, addChannel
 } from "@/store/festures/home-slice";
 import { useInitialState } from "@/utils/use-initial-state";
 import { Channel } from "@/types/data";
@@ -53,7 +53,7 @@ const Channels = ({ onClose }: Props) => {
                         <span className="channel-item-title">我的频道</span>
                         <span className="channel-item-title-extra">点击进入频道</span>
                         <span className="channel-item-edit"
-                            onClick={() => setIsEdit(!isEdit)}>{isEdit ? '返回' : '编辑'}</span>
+                            onClick={() => setIsEdit(!isEdit)}>{isEdit ? '完成' : '编辑'}</span>
                     </div>
                     <div className="channel-list">
                         {/* 选中时，添加类名 selected */}
@@ -77,7 +77,7 @@ const Channels = ({ onClose }: Props) => {
                     </div>
                     <div className="channel-list">
                         {restChannels.map((item) => <span className="channel-list-item"
-                            key={item.id}>+ {item.name}</span>)
+                            key={item.id} onClick={()=>dispatch(addChannel(item))}>+ {item.name}</span>)
                         }
                     </div>
                 </div>

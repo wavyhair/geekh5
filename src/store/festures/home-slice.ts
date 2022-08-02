@@ -2,8 +2,8 @@
  * @Author: chenjie
  * @Date: 2022-07-30 18:34:19
  * @LastEditors: chenjie
- * @LastEditTime: 2022-08-02 09:45:44
- * @FilePath: \react-geekh5-ts\src\store\festures\home-slice.ts
+ * @LastEditTime: 2022-08-02 16:19:32
+ * @FilePath: /src/store/festures/home-slice.ts
  * @Description: homeSlice
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
  */
@@ -14,11 +14,13 @@ import { createAsyncThunk, createSlice, current, PayloadAction } from "@reduxjs/
 import { RootState } from "..";
 import differenceBy from 'lodash/differenceBy'
 import sortBy from "lodash/sortBy";
+import exp from "constants";
 
 enum API {
     getUserChannel = '/user/channels',
     getAllChannel = 'channels',
-    delChannel = '/user/channels/'
+    delChannel = '/user/channels/',
+    addChannel = '/user/channels'
 }
 
 const CHANNEL_KEY = 'GEEK_CHANNEL_KEY'
@@ -66,6 +68,16 @@ export const delChannel = createAsyncThunk('home/delChannel', async (channel: Ch
     }
 })
 
+// 添加频道
+export const addChannel = createAsyncThunk('home/addChannle',(channel: Channel)=>{
+    if(getToken().token){
+        http.patch(API.addChannel,{channels:[channel]})
+        return channel
+    } else {
+        return channel
+    }
+})
+
 type HomeState = {
     userChannel: Channel[]
     restChannel: Channel[]
@@ -98,6 +110,11 @@ export const homeSlice = createSlice({
             .addCase(delChannel.fulfilled, (state, { payload }) => {
                 state.userChannel = state.userChannel.filter(item => item.id !== payload?.id)
                 state.restChannel = sortBy([...state.restChannel, payload], 'id') as Channel[]
+                localStorage.setItem(CHANNEL_KEY, JSON.stringify(state.userChannel))
+            })
+            .addCase(addChannel.fulfilled,(state,{payload})=>{
+                state.userChannel = [...state.userChannel,payload]
+                state.restChannel = state.restChannel.filter(item=>item.id!==payload.id)
                 localStorage.setItem(CHANNEL_KEY, JSON.stringify(state.userChannel))
             })
     }
