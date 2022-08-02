@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-07-30 18:34:19
  * @LastEditors: chenjie
- * @LastEditTime: 2022-08-01 20:42:26
+ * @LastEditTime: 2022-08-02 09:45:44
  * @FilePath: \react-geekh5-ts\src\store\festures\home-slice.ts
  * @Description: homeSlice
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -58,6 +58,7 @@ export const delChannel = createAsyncThunk('home/delChannel', async (channel: Ch
     // 登录
     if (getToken().token) {
         await http.delete(API.delChannel + channel.id)
+        return channel
     } else {
         // 没有登录
 

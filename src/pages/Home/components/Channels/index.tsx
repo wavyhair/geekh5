@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-08-01 14:51:11
  * @LastEditors: chenjie
- * @LastEditTime: 2022-08-01 20:13:44
+ * @LastEditTime: 2022-08-02 09:47:26
  * @Description: Channels
  */
 import classnames from 'classnames'
@@ -53,7 +53,7 @@ const Channels = ({ onClose }: Props) => {
                         <span className="channel-item-title">我的频道</span>
                         <span className="channel-item-title-extra">点击进入频道</span>
                         <span className="channel-item-edit"
-                            onClick={() => setIsEdit(!isEdit)}>{isEdit ? '保存' : '编辑'}</span>
+                            onClick={() => setIsEdit(!isEdit)}>{isEdit ? '返回' : '编辑'}</span>
                     </div>
                     <div className="channel-list">
                         {/* 选中时，添加类名 selected */}
