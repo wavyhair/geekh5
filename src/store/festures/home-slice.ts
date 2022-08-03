@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-07-30 18:34:19
  * @LastEditors: chenjie
- * @LastEditTime: 2022-08-02 17:33:17
+ * @LastEditTime: 2022-08-03 09:57:19
  * @FilePath: /src/store/festures/home-slice.ts
  * @Description: homeSlice
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -139,9 +139,10 @@ export const homeSlice = createSlice({
             })
             .addCase(getArticleList.fulfilled, (state, {payload}) => {
                 const {channelId, data: {pre_timestamp, results}} = payload
-                const currentArticles = state.channelArticle[channelId] ?? {pre_timestamp: Date.now(), results: []}
-                state.channelArticle[channelId].pre_timestamp = currentArticles.pre_timestamp
-                state.channelArticle[channelId].results = [...currentArticles.results, ...results]
+                const currentArticles = state.channelArticle[channelId]?.results ?? []
+                state.channelArticle = {...state.channelArticle,[channelId]:{pre_timestamp,results:[...currentArticles,...results]}}
+                // state.channelArticle[channelId].pre_timestamp = currentArticles.pre_timestamp
+                // state.channelArticle[channelId].results = [...currentArticles.results, ...results]
             })
     }
 })
