@@ -42,7 +42,7 @@
       position: absolute;
       top: 0;
       right: 0;
-      z-index: 2;
+      z-index: 1;
       display: flex;
       align-items: center;
       width: 86px;
@@ -59,9 +59,20 @@
           margin-right: 21px;
         }
       }
+
+      &::before {
+        content: '';
+        width: 20px;
+        height: 100%;
+        position: absolute;
+        left: -20px;
+        top: 0;
+        background: linear-gradient(to left, #ffffff, rgba(255, 255, 255, 0.3));
+      }
     }
   }
 }
+
 
 :global {
   .channel-popup {

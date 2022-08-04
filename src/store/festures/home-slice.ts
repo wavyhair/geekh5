@@ -2,16 +2,16 @@
  * @Author: chenjie
  * @Date: 2022-07-30 18:34:19
  * @LastEditors: chenjie
- * @LastEditTime: 2022-08-03 09:57:19
- * @FilePath: /src/store/festures/home-slice.ts
+ * @LastEditTime: 2022-08-04 21:30:26
+ * @FilePath: \react-geekh5-ts\src\store\festures\home-slice.ts
  * @Description: homeSlice
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
  */
-import {getToken} from "@/utils/auth";
+import { getToken } from "@/utils/auth";
 import http from "@/utils/http";
-import type {AllChannelsResponse, Articles, ArticlesResponse, Channel, UserChannelResponse} from "@/types/data";
-import {createAsyncThunk, createSlice, current, PayloadAction} from "@reduxjs/toolkit";
-import {RootState} from "..";
+import type { AllChannelsResponse, Articles, ArticlesResponse, Channel, UserChannelResponse } from "@/types/data";
+import { createAsyncThunk, createSlice, current, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "..";
 import differenceBy from 'lodash/differenceBy'
 import sortBy from "lodash/sortBy";
 
@@ -71,7 +71,7 @@ export const delChannel = createAsyncThunk('home/delChannel', async (channel: Ch
 // 添加频道
 export const addChannel = createAsyncThunk('home/addChannle', (channel: Channel) => {
     if (getToken().token) {
-        http.patch(API.addChannel, {channels: [channel]})
+        http.patch(API.addChannel, { channels: [channel] })
         return channel
     } else {
         return channel
@@ -81,6 +81,7 @@ export const addChannel = createAsyncThunk('home/addChannle', (channel: Channel)
 type ArticleType = {
     channel_id: number
     pre_timestamp: string
+    isPullDown: boolean
 }
 
 // 获取文章
@@ -88,10 +89,10 @@ export const getArticleList = createAsyncThunk('home/getArticleList', async (obj
     const res = await http.get<ArticlesResponse>(API.getArticleList, {
         params: {
             channel_id: obj.channel_id,
-            timestamp: obj.pre_timestamp
+            timestamp: obj.pre_timestamp,
         }
     })
-    return {channelId: obj.channel_id, data: res.data.data}
+    return { channelId: obj.channel_id, isPullDown: obj.isPullDown, data: res.data.data }
 })
 
 type HomeState = {
@@ -117,37 +118,51 @@ export const homeSlice = createSlice({
         }
     },
     extraReducers: (buider) => {
-        buider.addCase(getUserChannel.fulfilled, (state, {payload}) => {
+        buider.addCase(getUserChannel.fulfilled, (state, { payload }) => {
             state.userChannel = payload
             state.channelActiveKey = payload[0].id + ''
         })
-            .addCase(getAllChannel.fulfilled, (state, {payload}) => {
+            .addCase(getAllChannel.fulfilled, (state, { payload }) => {
                 // 在redux 工具包中，状态打印为代理对象。但是有基于 redux-toolkit 的函数 dosc current您可以使用它在 reducer 操作中打印您的状态
                 console.log(' 不加 current 打印出来的是代理对象 加了之后打印的是原来的状态', current(state.userChannel))
                 const restChannels = differenceBy(payload, state.userChannel, 'id')
                 state.restChannel = restChannels
             })
-            .addCase(delChannel.fulfilled, (state, {payload}) => {
+            .addCase(delChannel.fulfilled, (state, { payload }) => {
                 state.userChannel = state.userChannel.filter(item => item.id !== payload?.id)
                 state.restChannel = sortBy([...state.restChannel, payload], 'id') as Channel[]
                 localStorage.setItem(CHANNEL_KEY, JSON.stringify(state.userChannel))
             })
-            .addCase(addChannel.fulfilled, (state, {payload}) => {
+            .addCase(addChannel.fulfilled, (state, { payload }) => {
                 state.userChannel = [...state.userChannel, payload]
                 state.restChannel = state.restChannel.filter(item => item.id !== payload.id)
                 localStorage.setItem(CHANNEL_KEY, JSON.stringify(state.userChannel))
             })
-            .addCase(getArticleList.fulfilled, (state, {payload}) => {
-                const {channelId, data: {pre_timestamp, results}} = payload
+            .addCase(getArticleList.fulfilled, (state, { payload }) => {
+                const { channelId, data: { pre_timestamp, results } } = payload
                 const currentArticles = state.channelArticle[channelId]?.results ?? []
-                state.channelArticle = {...state.channelArticle,[channelId]:{pre_timestamp,results:[...currentArticles,...results]}}
+                console.log('channelId', channelId)
+                // 如果是下拉
+                if (payload.isPullDown) {
+                    state.channelArticle = {
+                        ...state.channelArticle,
+                        [channelId]: { pre_timestamp, results: [...results] },
+
+                    }
+                } else {
+                    state.channelArticle = {
+                        ...state.channelArticle,
+                        [channelId]: { pre_timestamp, results: [...currentArticles, ...results] }
+                    }
+                }
+
                 // state.channelArticle[channelId].pre_timestamp = currentArticles.pre_timestamp
                 // state.channelArticle[channelId].results = [...currentArticles.results, ...results]
             })
     }
 })
 export default homeSlice.reducer
-export const {changeTab,} = homeSlice.actions
+export const { changeTab, } = homeSlice.actions
 export const selectChannels = (state: RootState) => state.home.userChannel
 export const selectRestChannels = (state: RootState) => state.home.restChannel
 export const selectChannelActiveKey = (state: RootState) => state.home.channelActiveKey
