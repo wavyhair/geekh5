@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-07-05 21:00:44
  * @LastEditors: chenjie
- * @LastEditTime: 2022-07-19 20:38:46
+ * @LastEditTime: 2022-08-05 13:35:33
  * @FilePath: \react-geekh5-ts\src\pages\Layout\index.tsx
  * @Description: Layout
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -28,10 +28,9 @@ export default function Layout() {
   return (
     <div className={styles.root}>
       <Outlet />
-      <TabBar className="tabbar" activeKey={location.pathname} onChange={(path) => handleChange(path)}>
+      <TabBar className="tab-bar" activeKey={location.pathname} onChange={(path) => handleChange(path)}>
         {tabs.map(item => (
           <TabBar.Item
-            className={classNames('tabbar-item', location.pathname === item.path ? 'tabbar-item-active' : '')}
             key={item.path}
             // 注意：该形式只能使用一个图标，在是否高亮时，具有不同的颜色
             // icon={<UserOutline />}

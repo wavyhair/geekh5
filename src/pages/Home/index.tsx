@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-07-19 18:55:06
  * @LastEditors: chenjie
- * @LastEditTime: 2022-08-02 16:29:51
+ * @LastEditTime: 2022-08-05 11:37:26
  * @FilePath: /src/pages/Home/index.tsx
  * @Description: Home
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -32,7 +32,7 @@ export default function Home() {
             {channels.length > 0 && (
                 <Tabs className="tabs" activeLineMode="fixed" activeKey={channelActiveKeu} onChange={(id) => dispatch(changeTab(id + ''))}>
                     {channels.map((item) => (
-                        <Tabs.Tab title={item.name} key={item.id}>
+                        <Tabs.Tab  title={item.name} key={item.id}>
                             <ArticleList channel_id={item.id} />
                         </Tabs.Tab>
                     ))}
@@ -42,7 +42,7 @@ export default function Home() {
                 <Icon type="iconbtn_search" />
                 <Icon type="iconbtn_channel" onClick={() => setVisible(true)} />
             </div>
-            <Popup visible={visible} onMaskClick={() => setVisible(false)} position="left" className="channel-popup">
+            <Popup visible={visible} onMaskClick={() => setVisible(false)} position="left" >
                 <Channels onClose={() => setVisible(false)} />
             </Popup>
         </div>

@@ -1,83 +1,70 @@
-.root {
-  height: 100%;
+/*
+ * @Author: chenjie
+ * @Date: 2022-08-05 11:46:33
+ * @LastEditors: chenjie
+ * @LastEditTime: 2022-08-05 11:46:33
+ * @Description: desc
+ */
+.root
+{
+    height: 100%;
 
-  :global {
-    .tabs {
-      height: 100%;
-      padding: 44px 0 50px 0;
+    :global
+    {
+        .tabs
+        {
+            box-sizing: border-box;  height: 100%;  padding: 44px 0 50px 0;
+            .adm-tabs-header
+            {
+                position: fixed;  z-index: 2;  top: 0;  width: calc(100vw - 86px);  height: 44px;  background-color: #fff;
+            }
 
-      .adm-tabs-header {
-        position: fixed;
-        top: 0;
-        z-index: 2;
-        height: 44px;
-        width: calc(100vw - 86px);
-        background-color: #fff;
-      }
+            .adm-tabs-tab
+            {
+                font-size: 15px;  line-height: 25px;  color: #9ea1ae;
+            }
+            .adm-tabs-tab-active
+            {
+                font-size: 18px;  color: var(--adm-color-text);
+            }
 
-      .adm-tabs-tab {
-        line-height: 25px;
-        color: #9ea1ae;
-        font-size: 15px;
-      }
+            .adm-tabs-tab-line
+            {
+                height: 3px;  border-radius: 2px;
+            }
 
-      .adm-tabs-tab-active {
-        color: var(--adm-color-text);
-        font-size: 18px;
-      }
-
-      .adm-tabs-tab-line {
-        background-color: orange;
-        height: 3px;
-        border-radius: 2px;
-      }
-
-      .adm-tabs-content {
-        height: 100%;
-        padding: 0;
-      }
-    }
-
-    .tabs-opration {
-      position: absolute;
-      top: 0;
-      right: 0;
-      z-index: 1;
-      display: flex;
-      align-items: center;
-      width: 86px;
-      height: 44px;
-      padding: 0 14px;
-      background: #fff;
-      border-bottom: 1px solid #efefef;
-
-      .icon {
-        color: #9ea1ae;
-        font-size: 18px;
-
-        &:first-child {
-          margin-right: 21px;
+            .adm-tabs-content
+            {
+                height: 100%;  padding: 0;
+            }
         }
-      }
 
-      &::before {
-        content: '';
-        width: 20px;
-        height: 100%;
-        position: absolute;
-        left: -20px;
-        top: 0;
-        background: linear-gradient(to left, #ffffff, rgba(255, 255, 255, 0.3));
-      }
+        .tabs-opration
+        {
+            position: absolute;  z-index: 2;  top: 0;  right: 0;  display: flex;  align-items: center;  box-sizing: border-box; width: 86px;  height: 44px;  padding: 0 14px;  border-bottom: 1px solid #efefef;  background: #fff;
+
+            .icon
+            {
+                font-size: 18px;  color: #9ea1ae;
+
+                &:first-child
+                {
+                    margin-right: 21px;
+                }
+            }
+        }
     }
-  }
 }
 
-
-:global {
-  .channel-popup {
-    .adm-popup-body {
-      overflow-y: scroll;
+// 给组件结构外的元素设置样式
+// 因为 Popup 直接生成在 body 中，所以，必须直接添加 全局样式 才会生效
+:global
+{
+    .channel-popup
+    {
+        .adm-popup-body
+        {
+            overflow-y: scroll;
+        }
     }
-  }
 }

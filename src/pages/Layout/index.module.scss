@@ -1,34 +1,28 @@
+/*
+ * @Author: chenjie
+ * @Date: 2022-08-05 13:33:18
+ * @LastEditors: chenjie
+ * @LastEditTime: 2022-08-05 13:33:18
+ * @Description: desc
+ */
 @import '@scss/hairline.scss';
 
 .root {
     height: 100%;
 
     :global {
-        .tabbar {
+        // 底部 tabbar 的样式
+        .tab-bar {
             position: fixed;
             z-index: 1;
             bottom: 0;
-            left: 0;
             width: 100%;
-            height: 50px;
-            padding: 7px 0 5px;
+            height: 46px;
             background-color: #f7f8fa;
             @include hairline(top, #f0f0f0);
 
-            &-item-active {
+            .icon {
                 color: #fc6627;
-            }
-
-            &-item {
-                flex: 1;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-
-                .icon {
-                    margin-bottom: 4px;
-                    font-size: 20px;
-                }
             }
         }
     }

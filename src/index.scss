@@ -1,8 +1,19 @@
+/*
+ * @Author: chenjie
+ * @Date: 2022-08-05 13:51:19
+ * @LastEditors: chenjie
+ * @LastEditTime: 2022-08-05 13:51:19
+ * @Description: desc
+ */
 :root:root {
-  --adm-color-white: #fc6627;
+  // 定制 antd-mobile 的主题
+  --adm-color-primary: #fc6627;
   --adm-font-family: 'PingFangSC-Regular';
+
+  // 自己创建的全局 CSS 变量
   --font-size: 16px;
 }
+
 html,
 body {
   margin: 0;
@@ -15,15 +26,17 @@ body,
   height: 100%;
 }
 
-p,
-h2,
-h3 {
-  margin: 0;
-}
+// 字体图标的基础样式
 .icon {
   width: 1em;
   height: 1em;
   vertical-align: -0.15em;
   fill: currentColor;
   overflow: hidden;
+}
+
+p,
+h2,
+h3 {
+  margin: 0;
 }
