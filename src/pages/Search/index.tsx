@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-08-08 21:45:02
  * @LastEditors: chenjie
- * @LastEditTime: 2022-08-08 21:53:01
+ * @LastEditTime: 2022-08-09 21:21:02
  * @FilePath: \react-geekh5-ts\src\pages\Search\index.tsx
  * @Description: 
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -13,17 +13,24 @@ import { NavBar, SearchBar } from 'antd-mobile'
 import Icon from '@/components/Icon'
 import styles from './index.module.scss'
 import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
 
 const SearchPage = () => {
-  const history = useNavigate()
+  const navigate = useNavigate()
+  const [searchText, setSearchText] = useState('')
   const flag = true
+  // 搜索框发生变化
+  const onSearchChange = (value: string) => {
+    setSearchText(value)
+  }
   return (
     <div className={styles.root}>
       <NavBar
         className="navbar"
+        onBack={() => navigate(-1)}
         right={<span className="search-text">搜索</span>}
       >
-        <SearchBar placeholder="请输入关键字搜索" />
+        <SearchBar value={searchText} onChange={onSearchChange} placeholder="请输入关键字搜索" />
       </NavBar>
 
       {flag && (

@@ -2,8 +2,8 @@
  * @Author: chenjie
  * @Date: 2022-07-19 18:55:06
  * @LastEditors: chenjie
- * @LastEditTime: 2022-08-05 11:37:26
- * @FilePath: /src/pages/Home/index.tsx
+ * @LastEditTime: 2022-08-09 21:07:04
+ * @FilePath: \react-geekh5-ts\src\pages\Home\index.tsx
  * @Description: Home
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
  */
@@ -20,9 +20,11 @@ import { useState } from "react";
 import Channels from "./components/Channels";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import ArticleList from "./components/ArticleList";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
     const dispatch = useAppDispatch()
+    const navigate = useNavigate()
     const [visible, setVisible] = useState(false)
     const channels: Channel[] = useInitialState(getUserChannel, selectChannels)
     const channelActiveKeu = useAppSelector(selectChannelActiveKey)
@@ -32,14 +34,15 @@ export default function Home() {
             {channels.length > 0 && (
                 <Tabs className="tabs" activeLineMode="fixed" activeKey={channelActiveKeu} onChange={(id) => dispatch(changeTab(id + ''))}>
                     {channels.map((item) => (
-                        <Tabs.Tab  title={item.name} key={item.id}>
+                        <Tabs.Tab title={item.name} key={item.id}>
                             <ArticleList channel_id={item.id} />
                         </Tabs.Tab>
                     ))}
                 </Tabs>
             )}
             <div className="tabs-opration">
-                <Icon type="iconbtn_search" />
+                <Icon type="iconbtn_search" onClick={() => navigate('/search')
+                } />
                 <Icon type="iconbtn_channel" onClick={() => setVisible(true)} />
             </div>
             <Popup visible={visible} onMaskClick={() => setVisible(false)} position="left" >

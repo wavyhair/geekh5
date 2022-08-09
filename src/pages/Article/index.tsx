@@ -1,3 +1,12 @@
+/*
+ * @Author: chenjie
+ * @Date: 2022-08-08 21:25:22
+ * @LastEditors: chenjie
+ * @LastEditTime: 2022-08-09 21:09:49
+ * @FilePath: \react-geekh5-ts\src\pages\Article\index.tsx
+ * @Description: 
+ * Copyright (c) 2022 by chenjie, All Rights Reserved.
+ */
 import { NavBar, InfiniteScroll } from 'antd-mobile'
 import { useNavigate } from 'react-router-dom'
 import classNames from 'classnames'
@@ -8,7 +17,7 @@ import CommentItem from './components/CommentItem'
 import CommentFooter from './components/CommentFooter'
 
 const Article = () => {
-  const history = useNavigate()
+  const navigate = useNavigate()
 
   const loadMoreComments = async () => {
     console.log('加载更多评论')
@@ -65,7 +74,7 @@ const Article = () => {
     <div className={styles.root}>
       <div className="root-wrapper">
         <NavBar
-          // onBack={() => history.go(-1)}
+          onBack={() => navigate(-1)}
           right={
             <span>
               <Icon type="icongengduo" />
