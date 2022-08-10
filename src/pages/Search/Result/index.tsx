@@ -2,12 +2,12 @@
  * @Author: chenjie
  * @Date: 2022-08-08 21:45:02
  * @LastEditors: chenjie
- * @LastEditTime: 2022-08-08 21:52:27
+ * @LastEditTime: 2022-08-10 17:19:03
  * @FilePath: \react-geekh5-ts\src\pages\Search\Result\index.tsx
  * @Description: 
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
  */
-import { useNavigate } from 'react-router-dom'
+import {useLocation, useNavigate} from 'react-router-dom'
 import { NavBar } from 'antd-mobile'
 
 import ArticleItem from '@/components/ArticleItem'
@@ -15,7 +15,9 @@ import ArticleItem from '@/components/ArticleItem'
 import styles from './index.module.scss'
 
 const Result = () => {
-  const history = useNavigate()
+  const navigate = useNavigate()
+  const location = useLocation()
+  console.log(location);
 
   const renderArticleList = () => {
     return [].map((item, index) => {

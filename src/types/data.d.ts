@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-07-10 18:32:23
  * @LastEditors: chenjie
- * @LastEditTime: 2022-08-02 16:54:33
+ * @LastEditTime: 2022-08-10 09:38:06
  * @FilePath: /src/types/data.d.ts
  * @Description: 
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -89,6 +89,11 @@ export type AllChannles = {
     channels:Channel[]
 }
 
+// 搜索关键词
+export type Suggestion = {
+    options:string[]
+}
+
 
 // 修改头像响应信息
 export type UserPhotoResponse = ApiResponse<{ photo: string }>
@@ -104,3 +109,6 @@ export type AllChannelsResponse = ApiResponse<AllChannles>
 
 // 文章响应数据
 export type ArticlesResponse = ApiResponse<Articles>
+
+// 搜索关键词响应数据
+export type SuggestionResponse = ApiResponse<Suggestion>
