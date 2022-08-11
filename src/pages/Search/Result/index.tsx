@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-08-08 21:45:02
  * @LastEditors: chenjie
- * @LastEditTime: 2022-08-10 17:19:03
+ * @LastEditTime: 2022-08-11 10:02:08
  * @FilePath: \react-geekh5-ts\src\pages\Search\Result\index.tsx
  * @Description: 
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -52,7 +52,7 @@ const Result = () => {
 
   return (
     <div className={styles.root}>
-      <NavBar >搜索结果</NavBar>
+      <NavBar onBack={()=>navigate(-1)}>搜索结果</NavBar>
       <div className="article-list">{renderArticleList()}</div>
     </div>
   )
