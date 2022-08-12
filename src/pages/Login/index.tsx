@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-07-05 21:00:57
  * @LastEditors: chenjie
- * @LastEditTime: 2022-07-30 11:48:30
+ * @LastEditTime: 2022-08-12 17:05:47
  * @FilePath: \react-geekh5-ts\src\pages\Login\index.tsx
  * @Description: Login
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -23,7 +23,7 @@ type LoginFrom = {
 }
 export default function Login() {
   const dispatch = useAppDispatch()
-  const navegete = useNavigate()
+  const navigate = useNavigate()
   const mobileRef = useRef<InputRef>(null)
   const timerRef = useRef(-1)
   const [form] = Form.useForm()
@@ -37,7 +37,7 @@ export default function Login() {
   // 登录
   const onFinish = async (values: LoginFrom) => {
     await dispatch(login(values))
-    Toast.show({ content: '登录成功', duration: 600, afterClose: () => { navegete(location.state?.from || '/home/index', { replace: true }) } })
+    Toast.show({ content: '登录成功', duration: 600, afterClose: () => { navigate(location.state?.from || '/home/index', { replace: true }) } })
   }
   // 发送验证码
   const sendCode = async () => {

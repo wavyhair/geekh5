@@ -2,9 +2,9 @@
  * @Author: chenjie
  * @Date: 2022-08-08 21:45:02
  * @LastEditors: chenjie
- * @LastEditTime: 2022-08-11 10:07:46
+ * @LastEditTime: 2022-08-12 17:04:56
  * @FilePath: \react-geekh5-ts\src\pages\Search\index.tsx
- * @Description: 
+ * @Description:
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
  */
 import classnames from 'classnames'
@@ -76,11 +76,11 @@ const SearchPage = () => {
             histories = [value]
         } else {
             // 本地存储有
-            const exist = locationHistories.indexOf(value)
+            const exist = locationHistories.indexOf(value)!==-1
             if (exist) {
                 // 存在
-                locationHistories.filter((item) => item !== value)
-                histories = [value, ...locationHistories]
+                const newLocationHistories = locationHistories.filter((item) => item !== value)
+                histories = [value, ...newLocationHistories]
             } else {
                 // 不存在
                 histories = [value, ...locationHistories]
@@ -97,7 +97,7 @@ const SearchPage = () => {
     }
     // 删除历史记录
     const deleteHistory = (history: string) => {
-        const newHistorys = searchHistory.filter((item)=>item !== history)
+        const newHistorys = searchHistory.filter((item) => item !== history)
         localStorage.setItem(GEEK_SEARCH_KEY, JSON.stringify(newHistorys))
         setSearchHistory(newHistorys)
     }
@@ -123,10 +123,10 @@ const SearchPage = () => {
             </span>
                     </div>
                     {searchHistory.map((item, index) =>
-                        <div key={index} className="history-list">
+                        <div key={index} className="history-list" onClick={() => onSearch(item)}>
                                   <span className="history-item">
                                     <span className="text-overflow">{item}</span>
-                                    <Icon type="iconbtn_essay_close" onClick={()=>deleteHistory(item)}/>
+                                    <Icon type="iconbtn_essay_close" onClick={() => deleteHistory(item)}/>
                                   </span>
                         </div>
                     )}

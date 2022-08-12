@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-07-05 21:00:44
  * @LastEditors: chenjie
- * @LastEditTime: 2022-08-05 13:35:33
+ * @LastEditTime: 2022-08-12 17:07:47
  * @FilePath: \react-geekh5-ts\src\pages\Layout\index.tsx
  * @Description: Layout
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -11,7 +11,6 @@ import styles from './index.module.scss'
 import { TabBar } from 'antd-mobile'
 import Icon from '@/components/Icon';
 import { useLocation, useNavigate, Outlet } from 'react-router-dom';
-import classNames from 'classnames';
 
 export default function Layout() {
   const location = useLocation()
@@ -37,7 +36,7 @@ export default function Layout() {
             // icon 的值可以是一个函数，通过这种方式，就可以觉得渲染不同的图标
             icon={(active: boolean) => {
               // 此处的参数 active 表示：当前项是否高亮
-              return <Icon className="tabbar-item-icon" type={active ? `${item.icon}_sel` : item.icon} />
+              return <Icon className="tab-bar-icon" type={active ? `${item.icon}_sel` : item.icon} />
             }}
             title={item.text}
           />

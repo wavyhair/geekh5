@@ -1,9 +1,35 @@
+/*
+ * @Author: chenjie
+ * @Date: 2022-08-12 16:23:59
+ * @LastEditors: chenjie
+ * @LastEditTime: 2022-08-12 16:51:40
+ * @Description: desc
+ */
 .root {
   display: flex;
   flex-direction: column;
   height: 100%;
 
+
+
   :global {
+    .article {
+      overflow-y: scroll;
+      box-sizing: border-box;
+      height: 100%;
+      display: block;
+      padding-top: 44px;
+    }
+
+    .adm-nav-bar {
+      position: fixed;
+      z-index: 2;
+      top: 0;
+      width: 100%;
+      height: 44px;
+      background-color: #fff;
+    }
+
     .article-list {
       flex: 1;
       padding: 0 16px;

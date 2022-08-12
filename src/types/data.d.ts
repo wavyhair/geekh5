@@ -2,9 +2,9 @@
  * @Author: chenjie
  * @Date: 2022-07-10 18:32:23
  * @LastEditors: chenjie
- * @LastEditTime: 2022-08-10 09:38:06
+ * @LastEditTime: 2022-08-12 14:34:39
  * @FilePath: /src/types/data.d.ts
- * @Description: 
+ * @Description:
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
  */
 
@@ -94,6 +94,13 @@ export type Suggestion = {
     options:string[]
 }
 
+// 搜索结果数据
+export type SearchResult = {
+    page: number;
+    per_page: number;
+    total_count: number;
+    results: Articles['results'];
+}
 
 // 修改头像响应信息
 export type UserPhotoResponse = ApiResponse<{ photo: string }>
@@ -112,3 +119,6 @@ export type ArticlesResponse = ApiResponse<Articles>
 
 // 搜索关键词响应数据
 export type SuggestionResponse = ApiResponse<Suggestion>
+
+// 搜索结果响应数据
+export type SearchResultResponse = ApiResponse<SearchResult>
