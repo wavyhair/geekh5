@@ -2,20 +2,20 @@
  * @Author: chenjie
  * @Date: 2022-08-08 21:45:02
  * @LastEditors: chenjie
- * @LastEditTime: 2022-08-12 17:04:56
+ * @LastEditTime: 2022-08-13 12:37:53
  * @FilePath: \react-geekh5-ts\src\pages\Search\index.tsx
  * @Description:
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
  */
 import classnames from 'classnames'
-import {NavBar, SearchBar} from 'antd-mobile'
-import {useAppDispatch, useAppSelector} from "@/store/hooks";
-import {getSuggestion, selectSuggestion, clearSuggestion} from "@/store/festures/search-slice";
-import {useDebounceFn} from "ahooks";
+import { NavBar, SearchBar } from 'antd-mobile'
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { getSuggestion, selectSuggestion, clearSuggestion } from "@/store/festures/search-slice";
+import { useDebounceFn } from "ahooks";
 import Icon from '@/components/Icon'
 import styles from './index.module.scss'
-import {useNavigate} from 'react-router-dom'
-import {useEffect, useState} from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 
 
 const SearchPage = () => {
@@ -49,9 +49,9 @@ const SearchPage = () => {
     })
 
     // 防抖方法
-    const {run: debounGetSuggest} = useDebounceFn((value: string) => {
+    const { run: debounGetSuggest } = useDebounceFn((value: string) => {
         dispatch(getSuggestion(value))
-    }, {wait: 500})
+    }, { wait: 500 })
 
     // 搜索框发生变化
     const onSearchChange = (value: string) => {
@@ -76,7 +76,7 @@ const SearchPage = () => {
             histories = [value]
         } else {
             // 本地存储有
-            const exist = locationHistories.indexOf(value)!==-1
+            const exist = locationHistories.indexOf(value) !== -1
             if (exist) {
                 // 存在
                 const newLocationHistories = locationHistories.filter((item) => item !== value)
@@ -108,7 +108,7 @@ const SearchPage = () => {
                 onBack={() => navigate(-1)}
                 right={<span className="search-text" onClick={() => onSearch(searchText)}>搜索</span>}
             >
-                <SearchBar value={searchText} onChange={onSearchChange} placeholder="请输入关键字搜索"/>
+                <SearchBar value={searchText} onChange={onSearchChange} placeholder="请输入关键字搜索" />
             </NavBar>
             {
                 searchHistory.length > 0 && <div
@@ -118,16 +118,16 @@ const SearchPage = () => {
                     <div className="history-header">
                         <span>搜索历史</span>
                         <span>
-              <Icon type="iconbtn_del" onClick={clearAllHistorys}/>
-              清除全部
-            </span>
+                            <Icon type="iconbtn_del" onClick={clearAllHistorys} />
+                            清除全部
+                        </span>
                     </div>
                     {searchHistory.map((item, index) =>
-                        <div key={index} className="history-list" onClick={() => onSearch(item)}>
-                                  <span className="history-item">
-                                    <span className="text-overflow">{item}</span>
-                                    <Icon type="iconbtn_essay_close" onClick={() => deleteHistory(item)}/>
-                                  </span>
+                        <div key={index} className="history-list" >
+                            <span className="history-item">
+                                <span className="text-overflow" onClick={() => onSearch(item)}>{item}</span>
+                                <Icon type="iconbtn_essay_close" onClick={() => deleteHistory(item)} />
+                            </span>
                         </div>
                     )}
                 </div>
@@ -138,15 +138,15 @@ const SearchPage = () => {
                 className={classnames('search-result', (highLightSuggest.length > 0 && highLightSuggest[0]) ? 'show' : '')}>
                 {
                     highLightSuggest.map((item, index) =>
-                            item && <div key={index} className="result-item"
-                                         onClick={() => onSearch(item.left + item.search + item.right)}>
-                                <Icon className="icon-search" type="iconbtn_search"/>
-                                <div className="result-value text-overflow">
-                                    {item.left}
-                                    <span>{item.search}</span>
-                                    {item.right}
-                                </div>
+                        item && <div key={index} className="result-item"
+                            onClick={() => onSearch(item.left + item.search + item.right)}>
+                            <Icon className="icon-search" type="iconbtn_search" />
+                            <div className="result-value text-overflow">
+                                {item.left}
+                                <span>{item.search}</span>
+                                {item.right}
                             </div>
+                        </div>
                     )
                 }
 

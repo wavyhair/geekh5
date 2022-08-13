@@ -1,6 +1,14 @@
+/*
+ * @Author: chenjie
+ * @Date: 2022-08-02 19:56:03
+ * @LastEditors: chenjie
+ * @LastEditTime: 2022-08-13 12:34:50
+ * @FilePath: \react-geekh5-ts\src\components\ArticleItem\index.tsx
+ * @Description: 
+ * Copyright (c) 2022 by chenjie, All Rights Reserved.
+ */
 import classnames from 'classnames'
 
-import Icon from '@/components/Icon'
 
 import styles from './index.module.scss'
 import dayjs from 'dayjs'
@@ -56,9 +64,9 @@ const ArticleItem = ({ title, pubdate, aut_name, type, images, comm_count }: Pro
         <span>{aut_name}</span>
         <span>{comm_count}</span>
         <span>{dayjs().from(dayjs(pubdate))}</span>
-        <span className="close">
+        {/* <span className="close">
           <Icon type="iconbtn_essay_close" />
-        </span>
+        </span> */}
       </div>
     </div>
   )
