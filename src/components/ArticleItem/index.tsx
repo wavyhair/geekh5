@@ -2,14 +2,14 @@
  * @Author: chenjie
  * @Date: 2022-08-02 19:56:03
  * @LastEditors: chenjie
- * @LastEditTime: 2022-08-13 12:34:50
+ * @LastEditTime: 2022-08-13 12:59:54
  * @FilePath: \react-geekh5-ts\src\components\ArticleItem\index.tsx
  * @Description: 
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
  */
 import classnames from 'classnames'
 
-
+import { Image } from 'antd-mobile';
 import styles from './index.module.scss'
 import dayjs from 'dayjs'
 // 相对时间插件
@@ -50,7 +50,8 @@ const ArticleItem = ({ title, pubdate, aut_name, type, images, comm_count }: Pro
             {
               images.map((item, index) =>
                 <div key={index} className="article-img-wrapper">
-                  <img
+                  <Image
+                    lazy
                     src={item}
                     alt=""
                   />
