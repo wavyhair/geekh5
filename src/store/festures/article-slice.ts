@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-08-13 17:10:29
  * @LastEditors: chenjie
- * @LastEditTime: 2022-08-14 11:56:38
+ * @LastEditTime: 2022-08-14 17:55:27
  * @FilePath: \react-geekh5-ts\src\store\festures\article-slice.ts
  * @Description: articleSlice
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -56,7 +56,7 @@ export const articleSlice = createSlice({
     extraReducers(builder) {
         builder.addCase(getArticleById.fulfilled, (state, { payload }) => {
             state.detail = payload
-            state.detail.pubdate = dayjs(payload.pubdate).locale('zh-cn').format('LL')
+            state.detail.pubdate = dayjs(payload.pubdate).locale('zh-cn').fromNow()
         })
     },
 })

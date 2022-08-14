@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-08-08 21:25:22
  * @LastEditors: chenjie
- * @LastEditTime: 2022-08-14 17:32:32
+ * @LastEditTime: 2022-08-14 18:58:24
  * @FilePath: \react-geekh5-ts\src\pages\Article\index.tsx
  * @Description: 
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -25,14 +25,14 @@ import { useInitialState } from '@/utils/use-initial-state'
 import { getArticleById, selectArticleDetail } from '@/store/festures/article-slice'
 import { ArticleDetail } from '@/types/data'
 import { useParams } from 'react-router-dom'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 
 
 const Article = () => {
+  const [loading, setLoading] = useState(true)
   const params = useParams<{ artId: string }>()
-  const details: ArticleDetail = useInitialState(() => getArticleById(params.artId), selectArticleDetail)
-  console.log('details', details)
+  const details: ArticleDetail = useInitialState(() => getArticleById(params.artId), selectArticleDetail, () => { setLoading(false) })
   const navigate = useNavigate()
 
   const loadMoreComments = async () => {
@@ -59,15 +59,15 @@ const Article = () => {
 
       <div className="wrapper">
         {
-          details.art_id ? (
+          !loading ? (
             <div className="article-wrapper">
               <div className="header">
                 <h1 className="title">{details.title}</h1>
 
                 <div className="info">
                   <span>{details.pubdate}</span>
-                  <span>{details.read_count}</span>
-                  <span>{details.comm_count}</span>
+                  <span>{details.read_count}评论</span>
+                  <span>{details.comm_count}阅读</span>
                 </div>
 
                 <div className="author">
@@ -123,7 +123,6 @@ const Article = () => {
       </div>
     )
   }
-  const flag = true
 
   return (
     <div className={styles.root}>
@@ -136,15 +135,14 @@ const Article = () => {
             </span>
           }
         >
-          {flag && (
-            <div className="nav-author">
-              <img src="http://geek.itheima.net/images/user_head.jpg" alt="" />
-              <span className="name">黑马先锋</span>
-              <span className={classNames('follow', flag ? 'followed' : '')}>
-                {details.is_followed ? '已关注' : '关注'}
-              </span>
-            </div>
-          )}
+          <div className="nav-author">
+            <img src="http://geek.itheima.net/images/user_head.jpg" alt="" />
+            <span className="name">{details.aut_name}</span>
+            <span className={classNames('follow', details.is_followed ? 'followed' : '')}>
+              {details.is_followed ? '已关注' : '关注'}
+            </span>
+          </div>
+          )
         </NavBar>
         {/* 文章详情和评论 */}
         {renderArticle()}
