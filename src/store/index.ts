@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-07-10 18:27:25
  * @LastEditors: chenjie
- * @LastEditTime: 2022-08-10 09:46:52
+ * @LastEditTime: 2022-08-13 17:14:20
  * @FilePath: \react-geekh5-ts\src\store\index.ts
  * @Description: store
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -12,12 +12,14 @@ import homeSlice from './festures/home-slice';
 import loginSlice from "./festures/login-slice";
 import profileSlice from './festures/profile-slice';
 import searchSlice from "@/store/festures/search-slice";
+import articleSlice from './festures/article-slice';
 const store = configureStore({
     reducer: {
         login: loginSlice,
         profile: profileSlice,
         home: homeSlice,
-        search: searchSlice
+        search: searchSlice,
+        article: articleSlice
     }
 })
 export type AppDispatch = typeof store.dispatch;

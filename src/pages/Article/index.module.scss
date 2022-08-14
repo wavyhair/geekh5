@@ -15,6 +15,7 @@
     .adm-nav-bar-left {
       flex: unset;
     }
+
     .adm-nav-bar-title {
       padding: 0;
     }
@@ -29,20 +30,24 @@
       align-items: center;
       color: #3a3948;
       font-size: 15px;
+
       img {
         width: 24px;
         height: 24px;
         border-radius: 50%;
       }
+
       .name {
         margin: 0 8px;
         padding-right: 10px;
         border-right: 1px solid #bfc2cb;
         line-height: 10px;
       }
+
       .follow {
         color: #de644b;
       }
+
       .followed {
         color: #ccc;
       }
@@ -86,6 +91,7 @@
           &:first-child {
             padding-left: 0;
           }
+
           &:last-child {
             border-right: 0;
           }
@@ -114,7 +120,7 @@
         .follow {
           position: absolute;
           right: 0;
-          height: 29px;
+          // height: 29px;
           padding: 8px 18px;
           border-radius: 15px;
           line-height: 1;

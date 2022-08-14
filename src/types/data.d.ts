@@ -2,8 +2,8 @@
  * @Author: chenjie
  * @Date: 2022-07-10 18:32:23
  * @LastEditors: chenjie
- * @LastEditTime: 2022-08-12 14:34:39
- * @FilePath: /src/types/data.d.ts
+ * @LastEditTime: 2022-08-14 11:53:06
+ * @FilePath: \react-geekh5-ts\src\types\data.d.ts
  * @Description:
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
  */
@@ -46,6 +46,8 @@ export type UserProfile = {
     intro: string;
 }
 
+
+
 // useLocation 的返回值
 export type Location = {
     hash: string
@@ -61,18 +63,18 @@ export type Location = {
 export type Articles = {
     pre_timestamp: string;
     results: {
-      art_id: string;
-      aut_id: string;
-      aut_name: string;
-      comm_count: number;
-      cover: {
-        type: number;
-        images: string[];
-      };
-      pubdate: string;
-      title: string;
+        art_id: string;
+        aut_id: string;
+        aut_name: string;
+        comm_count: number;
+        cover: {
+            type: number;
+            images: string[];
+        };
+        pubdate: string;
+        title: string;
     }[];
-  };
+};
 
 // 频道数据类型
 export type Channel = {
@@ -86,12 +88,12 @@ export type UserChannel = {
 }
 // 所有频道数据
 export type AllChannles = {
-    channels:Channel[]
+    channels: Channel[]
 }
 
 // 搜索关键词
 export type Suggestion = {
-    options:string[]
+    options: string[]
 }
 
 // 搜索结果数据
@@ -100,6 +102,24 @@ export type SearchResult = {
     per_page: number;
     total_count: number;
     results: Articles['results'];
+}
+
+// 文章详情
+export type ArticleDetail = {
+    art_id: string;
+    title: string;
+    pubdate: string;
+    aut_id: string;
+    aut_name: string;
+    aut_photo: string;
+    is_followed: boolean;
+    attitude: number;
+    content: string;
+    is_collected: boolean;
+    // 接口中缺失
+    comm_count: number;
+    like_count: number;
+    read_count: number;
 }
 
 // 修改头像响应信息
@@ -122,3 +142,7 @@ export type SuggestionResponse = ApiResponse<Suggestion>
 
 // 搜索结果响应数据
 export type SearchResultResponse = ApiResponse<SearchResult>
+
+// 文章详情响应数据
+export type ArticleDetailResponse = ApiResponse<ArticleDetail>
+
