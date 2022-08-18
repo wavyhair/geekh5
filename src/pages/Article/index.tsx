@@ -1,8 +1,8 @@
 /*
  * @Author: chenjie
  * @Date: 2022-08-08 21:25:22
- * @LastEditors: chenjie
- * @LastEditTime: 2022-08-14 18:58:24
+ * @LastEditors: CHENJIE
+ * @LastEditTime: 2022-08-18 22:10:37
  * @FilePath: \react-geekh5-ts\src\pages\Article\index.tsx
  * @Description: 
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -17,6 +17,7 @@ import { NavBar, InfiniteScroll } from 'antd-mobile'
 import { useNavigate } from 'react-router-dom'
 import classNames from 'classnames'
 import styles from './index.module.scss'
+import { useThrottleFn } from 'ahooks'
 
 import Icon from '@/components/Icon'
 import CommentItem from './components/CommentItem'
@@ -25,19 +26,38 @@ import { useInitialState } from '@/utils/use-initial-state'
 import { getArticleById, selectArticleDetail } from '@/store/festures/article-slice'
 import { ArticleDetail } from '@/types/data'
 import { useParams } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 
 
 const Article = () => {
+  const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
   const params = useParams<{ artId: string }>()
   const details: ArticleDetail = useInitialState(() => getArticleById(params.artId), selectArticleDetail, () => { setLoading(false) })
-  const navigate = useNavigate()
-
+  const wrapperRef = useRef<HTMLDivElement>(null)
+  const authorRef = useRef<HTMLDivElement>(null)
+  const [showNavAuthor, setShowNavAuthor] = useState(false)
   const loadMoreComments = async () => {
     console.log('加载更多评论')
   }
+
+  // 防抖函数
+  const { run } = useThrottleFn(() => {
+    const { bottom } = authorRef.current!.getBoundingClientRect()
+    if (bottom - 44 <= 0) {
+      setShowNavAuthor(true)
+    } else {
+      setShowNavAuthor(false)
+    }
+  }, { wait: 300 })
+
+  // 导航栏中展示作者信息
+  useEffect(() => {
+    const wrapperDOM = wrapperRef.current
+    wrapperDOM?.addEventListener('scroll', run)
+    return () => wrapperDOM?.removeEventListener('scroll', run)
+  }, [loading])
 
   // 处理代码高亮
   useEffect(() => {
@@ -57,7 +77,7 @@ const Article = () => {
     // 文章详情
     return (
 
-      <div className="wrapper">
+      <div className="wrapper" ref={wrapperRef}>
         {
           !loading ? (
             <div className="article-wrapper">
@@ -70,7 +90,7 @@ const Article = () => {
                   <span>{details.comm_count}阅读</span>
                 </div>
 
-                <div className="author">
+                <div className="author" ref={authorRef}>
                   <img src={details.aut_photo ?? "http://geek.itheima.net/images/user_head.jpg"} alt="" />
                   <span className="name">{details.aut_name}</span>
                   <span className={classNames('follow', details.is_followed ? 'followed' : '')}>
@@ -135,14 +155,15 @@ const Article = () => {
             </span>
           }
         >
-          <div className="nav-author">
-            <img src="http://geek.itheima.net/images/user_head.jpg" alt="" />
-            <span className="name">{details.aut_name}</span>
-            <span className={classNames('follow', details.is_followed ? 'followed' : '')}>
-              {details.is_followed ? '已关注' : '关注'}
-            </span>
-          </div>
-          )
+          {
+            showNavAuthor && (<div className="nav-author">
+              <img src="http://geek.itheima.net/images/user_head.jpg" alt="" />
+              <span className="name">{details.aut_name}</span>
+              <span className={classNames('follow', details.is_followed ? 'followed' : '')}>
+                {details.is_followed ? '已关注' : '关注'}
+              </span>
+            </div>)
+          }
         </NavBar>
         {/* 文章详情和评论 */}
         {renderArticle()}
