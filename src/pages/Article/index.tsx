@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-08-08 21:25:22
  * @LastEditors: CHENJIE
- * @LastEditTime: 2022-08-20 18:23:16
+ * @LastEditTime: 2022-08-20 20:31:12
  * @FilePath: \react-geekh5-ts\src\pages\Article\index.tsx
  * @Description: 
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -23,10 +23,11 @@ import Icon from '@/components/Icon'
 import CommentItem from './components/CommentItem'
 import CommentFooter from './components/CommentFooter'
 import { useInitialState } from '@/utils/use-initial-state'
-import { getArticleById, selectArticleDetail } from '@/store/festures/article-slice'
+import { getArticleById, selectArticleDetail, updateInfo } from '@/store/festures/article-slice'
 import { ArticleDetail } from '@/types/data'
 import { useParams } from 'react-router-dom'
 import { useEffect, useRef, useState } from 'react'
+import { useAppDispatch } from '@/store/hooks'
 
 /**
    * 导航栏高度常量
@@ -35,6 +36,7 @@ const NAV_BAR_HEIGTH = 45
 
 const Article = () => {
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
   const [loading, setLoading] = useState(true)
   const params = useParams<{ artId: string }>()
   const details: ArticleDetail = useInitialState(() => getArticleById(params.artId), selectArticleDetail, () => { setLoading(false) })
@@ -101,6 +103,8 @@ const Article = () => {
     })
   }, [details])
 
+
+
   const renderArticle = () => {
     // 文章详情
     return (
@@ -121,8 +125,13 @@ const Article = () => {
                 <div className="author" ref={authorRef}>
                   <img src={details.aut_photo ?? "http://geek.itheima.net/images/user_head.jpg"} alt="" />
                   <span className="name">{details.aut_name}</span>
-                  <span className={classNames('follow', details.is_followed ? 'followed' : '')}>
-                    {details.is_collected ? '已关注' : '关注'}
+                  <span
+                    className={classNames('follow', details.is_followed ? 'followed' : '')}
+                    onClick={() => {
+                      dispatch(updateInfo({ name: 'is_followed', value: details.is_followed, id: details.art_id }))
+                    }}
+                  >
+                    {details.is_followed ? '已关注' : '关注'}
                   </span>
                 </div>
               </div>
@@ -187,7 +196,13 @@ const Article = () => {
             showNavAuthor && (<div className="nav-author">
               <img src="http://geek.itheima.net/images/user_head.jpg" alt="" />
               <span className="name">{details.aut_name}</span>
-              <span className={classNames('follow', details.is_followed ? 'followed' : '')}>
+              <span
+
+                className={classNames('follow', details.is_followed ? 'followed' : '')}
+                onClick={() => {
+                  dispatch(updateInfo({ name: 'is_followed', value: details.is_followed, id: details.art_id }))
+                }}
+              >
                 {details.is_followed ? '已关注' : '关注'}
               </span>
             </div>)

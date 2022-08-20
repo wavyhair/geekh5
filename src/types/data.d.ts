@@ -1,8 +1,8 @@
 /*
  * @Author: chenjie
  * @Date: 2022-07-10 18:32:23
- * @LastEditors: chenjie
- * @LastEditTime: 2022-08-14 11:53:06
+ * @LastEditors: CHENJIE
+ * @LastEditTime: 2022-08-20 19:37:28
  * @FilePath: \react-geekh5-ts\src\types\data.d.ts
  * @Description:
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -120,6 +120,13 @@ export type ArticleDetail = {
     comm_count: number;
     like_count: number;
     read_count: number;
+}
+
+// 关注作者 收藏文章 点赞文章类型
+export type ArticleAction = {
+    name: 'is_followed' | 'is_collected' | 'attitude';
+    value: boolean | number;
+    id?: string
 }
 
 // 修改头像响应信息

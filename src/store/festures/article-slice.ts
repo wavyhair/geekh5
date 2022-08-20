@@ -1,8 +1,8 @@
 /*
  * @Author: chenjie
  * @Date: 2022-08-13 17:10:29
- * @LastEditors: chenjie
- * @LastEditTime: 2022-08-14 17:55:27
+ * @LastEditors: CHENJIE
+ * @LastEditTime: 2022-08-20 20:24:07
  * @FilePath: \react-geekh5-ts\src\store\festures\article-slice.ts
  * @Description: articleSlice
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -10,14 +10,16 @@
 
 
 import dayjs from "dayjs";
-import { ArticleDetail, ArticleDetailResponse } from "@/types/data";
+import { ArticleAction, ArticleDetail, ArticleDetailResponse } from "@/types/data";
 import http from "@/utils/http";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "..";
 
 
 enum API {
-    getArticleById = '/articles/'
+    getArticleById = '/articles/',
+    followings = '/user/followings'
+
 }
 
 type ArticleState = {
@@ -49,15 +51,36 @@ export const getArticleById = createAsyncThunk('article/getArticleById', async (
 
 })
 
+// 关注 点赞 收藏
+export const updateInfo = createAsyncThunk('article/updateInfo', async (data: ArticleAction) => {
+    // 关注
+    if (data.name === 'is_followed') {
+        console.log('data.value', data.value)
+        if (data.value) {
+            // 取消关注
+            await http.delete(API.followings + '/' + data.id)
+        } else {
+            // 关注
+            await http.post(API.followings, { target: data.id })
+        }
+    }
+    return data
+})
+
 export const articleSlice = createSlice({
     name: 'article',
     initialState,
     reducers: {},
     extraReducers(builder) {
-        builder.addCase(getArticleById.fulfilled, (state, { payload }) => {
-            state.detail = payload
-            state.detail.pubdate = dayjs(payload.pubdate).locale('zh-cn').fromNow()
-        })
+        builder
+            .addCase(getArticleById.fulfilled, (state, { payload }) => {
+                state.detail = payload
+                state.detail.pubdate = dayjs(payload.pubdate).locale('zh-cn').fromNow()
+            })
+            .addCase(updateInfo.fulfilled, (state, { payload }) => {
+                state.detail = { ...state.detail, [payload.name]: !payload.value }
+                console.log('state.detail', state.detail)
+            })
     },
 })
 
