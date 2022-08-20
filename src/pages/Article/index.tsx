@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-08-08 21:25:22
  * @LastEditors: CHENJIE
- * @LastEditTime: 2022-08-18 22:10:37
+ * @LastEditTime: 2022-08-20 18:23:16
  * @FilePath: \react-geekh5-ts\src\pages\Article\index.tsx
  * @Description: 
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -28,7 +28,10 @@ import { ArticleDetail } from '@/types/data'
 import { useParams } from 'react-router-dom'
 import { useEffect, useRef, useState } from 'react'
 
-
+/**
+   * 导航栏高度常量
+   */
+const NAV_BAR_HEIGTH = 45
 
 const Article = () => {
   const navigate = useNavigate()
@@ -38,6 +41,8 @@ const Article = () => {
   const wrapperRef = useRef<HTMLDivElement>(null)
   const authorRef = useRef<HTMLDivElement>(null)
   const [showNavAuthor, setShowNavAuthor] = useState(false)
+  const commentRef = useRef<HTMLDivElement>(null)
+  const isShowComment = useRef(false)
   const loadMoreComments = async () => {
     console.log('加载更多评论')
   }
@@ -58,6 +63,29 @@ const Article = () => {
     wrapperDOM?.addEventListener('scroll', run)
     return () => wrapperDOM?.removeEventListener('scroll', run)
   }, [loading])
+
+  // 展示/隐藏 评论内容
+  const onShowComment = () => {
+    const wrapper = wrapperRef.current
+    const comment = commentRef.current
+    if (!wrapper || !comment) return
+
+    const commentTop = comment.getBoundingClientRect().top
+    if (!isShowComment.current) {
+      // 还没有展示评论信息 需要展示评论信息
+      wrapper.scrollTo({
+        // wrapper.scrollTop 表示已经滚动的距离
+        top: commentTop - NAV_BAR_HEIGTH + wrapper.scrollTop,
+        // 如果想要滚动时，带有动画效果，可以使用 smooth 即可
+        behavior: 'smooth'
+      })
+      isShowComment.current = true
+    } else {
+      // 已经展示评论信息 需要返回页面顶部
+      wrapper.scrollTo({ top: 0, behavior: 'smooth' })
+      isShowComment.current = false
+    }
+  }
 
   // 处理代码高亮
   useEffect(() => {
@@ -129,7 +157,7 @@ const Article = () => {
         }
 
 
-        <div className="comment">
+        <div className="comment" ref={commentRef}>
           <div className="comment-header">
             <span>全部评论（{details.comm_count}）</span>
             <span>{details.like_count} 点赞</span>
@@ -169,7 +197,7 @@ const Article = () => {
         {renderArticle()}
 
         {/* 底部评论栏 */}
-        <CommentFooter />
+        <CommentFooter onShowComment={onShowComment} />
       </div>
     </div>
   )

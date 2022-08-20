@@ -1,8 +1,8 @@
 /*
  * @Author: chenjie
  * @Date: 2022-08-08 21:25:22
- * @LastEditors: chenjie
- * @LastEditTime: 2022-08-08 21:37:46
+ * @LastEditors: CHENJIE
+ * @LastEditTime: 2022-08-20 15:56:34
  * @FilePath: \react-geekh5-ts\src\pages\Article\components\CommentFooter\index.tsx
  * @Description: 
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -14,9 +14,10 @@ type Props = {
   // normal 普通评论
   // reply 回复评论
   type?: 'normal' | 'reply'
+  onShowComment: () => void
 }
 
-const CommentFooter = ({ type = 'normal' }: Props) => {
+const CommentFooter = ({ type = 'normal', onShowComment }: Props) => {
   const flag = true
   return (
     <div className={styles.root}>
@@ -27,7 +28,7 @@ const CommentFooter = ({ type = 'normal' }: Props) => {
 
       {type === 'normal' && (
         <>
-          <div className="action-item">
+          <div className="action-item" onClick={onShowComment}>
             <Icon type="iconbtn_comment" />
             <p>评论</p>
             {!!1 && <span className="bage">{1}</span>}
