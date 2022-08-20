@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-08-13 17:10:29
  * @LastEditors: CHENJIE
- * @LastEditTime: 2022-08-20 20:24:07
+ * @LastEditTime: 2022-08-20 21:40:45
  * @FilePath: \react-geekh5-ts\src\store\festures\article-slice.ts
  * @Description: articleSlice
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -18,8 +18,9 @@ import { RootState } from "..";
 
 enum API {
     getArticleById = '/articles/',
-    followings = '/user/followings'
-
+    followings = '/user/followings',
+    likings = '/article/likings',
+    collections = '/article/collections'
 }
 
 type ArticleState = {
@@ -53,7 +54,7 @@ export const getArticleById = createAsyncThunk('article/getArticleById', async (
 
 // 关注 点赞 收藏
 export const updateInfo = createAsyncThunk('article/updateInfo', async (data: ArticleAction) => {
-    // 关注
+    // 是否点赞
     if (data.name === 'is_followed') {
         console.log('data.value', data.value)
         if (data.value) {
@@ -62,6 +63,24 @@ export const updateInfo = createAsyncThunk('article/updateInfo', async (data: Ar
         } else {
             // 关注
             await http.post(API.followings, { target: data.id })
+        }
+    } else if (data.name === 'attitude') { // 是否点赞
+        if (data.value === 1) {
+            // 取消点赞
+            await http.delete(API.likings + '/' + data.id)
+        } else {
+            // 点赞
+            await http.post(API.likings, { target: data.id })
+        }
+    } else {
+        // 是否收藏
+        if (data.value) {
+            // 取消收藏
+            await http.delete(API.collections + '/' + data.id)
+
+        } else {
+            // 收藏
+            await http.post(API.collections, { target: data.id })
         }
     }
     return data
@@ -78,8 +97,12 @@ export const articleSlice = createSlice({
                 state.detail.pubdate = dayjs(payload.pubdate).locale('zh-cn').fromNow()
             })
             .addCase(updateInfo.fulfilled, (state, { payload }) => {
-                state.detail = { ...state.detail, [payload.name]: !payload.value }
-                console.log('state.detail', state.detail)
+                if (payload.name === 'attitude') { // 单独处理点赞
+                    state.detail = { ...state.detail, attitude: payload.value === 1 ? 0 : 1 }
+                } else {
+                    state.detail = { ...state.detail, [payload.name]: !payload.value }
+
+                }
             })
     },
 })

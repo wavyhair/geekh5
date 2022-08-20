@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-08-08 21:25:22
  * @LastEditors: CHENJIE
- * @LastEditTime: 2022-08-20 20:31:12
+ * @LastEditTime: 2022-08-20 21:48:11
  * @FilePath: \react-geekh5-ts\src\pages\Article\index.tsx
  * @Description: 
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -212,7 +212,13 @@ const Article = () => {
         {renderArticle()}
 
         {/* 底部评论栏 */}
-        <CommentFooter onShowComment={onShowComment} />
+        <CommentFooter
+          onShowComment={onShowComment}
+          onLike={() => dispatch(updateInfo({ name: 'attitude', value: details.attitude, id: details.art_id }))}
+          attitude={details.attitude}
+          onCollected={() => dispatch(updateInfo({ name: 'is_collected', value: details.is_collected, id: details.art_id }))}
+          details={details}
+        />
       </div>
     </div>
   )
