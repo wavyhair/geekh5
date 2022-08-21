@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-08-08 21:25:22
  * @LastEditors: CHENJIE
- * @LastEditTime: 2022-08-20 21:48:11
+ * @LastEditTime: 2022-08-21 18:23:54
  * @FilePath: \react-geekh5-ts\src\pages\Article\index.tsx
  * @Description: 
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -23,11 +23,12 @@ import Icon from '@/components/Icon'
 import CommentItem from './components/CommentItem'
 import CommentFooter from './components/CommentFooter'
 import { useInitialState } from '@/utils/use-initial-state'
-import { getArticleById, selectArticleDetail, updateInfo } from '@/store/festures/article-slice'
+import { getArticleById, getArticleComment, selectArticleDetail, selectComment, updateInfo } from '@/store/festures/article-slice'
 import { ArticleDetail } from '@/types/data'
 import { useParams } from 'react-router-dom'
 import { useEffect, useRef, useState } from 'react'
-import { useAppDispatch } from '@/store/hooks'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import NoneComment from './components/NoneComment'
 
 /**
    * 导航栏高度常量
@@ -40,11 +41,13 @@ const Article = () => {
   const [loading, setLoading] = useState(true)
   const params = useParams<{ artId: string }>()
   const details: ArticleDetail = useInitialState(() => getArticleById(params.artId), selectArticleDetail, () => { setLoading(false) })
+  const comments = useAppSelector(selectComment)
   const wrapperRef = useRef<HTMLDivElement>(null)
   const authorRef = useRef<HTMLDivElement>(null)
   const [showNavAuthor, setShowNavAuthor] = useState(false)
   const commentRef = useRef<HTMLDivElement>(null)
   const isShowComment = useRef(false)
+  console.log('comments', comments)
   const loadMoreComments = async () => {
     console.log('加载更多评论')
   }
@@ -89,6 +92,12 @@ const Article = () => {
     }
   }
 
+  // 来表示评论类型
+  enum CommentType {
+    Article = 'a', // 文章
+    Comment = 'c' // 评论
+  }
+
   // 处理代码高亮
   useEffect(() => {
     const codes = document?.querySelectorAll('.dg-html pre > code')
@@ -103,6 +112,10 @@ const Article = () => {
     })
   }, [details])
 
+  // 第一次获取评论数据
+  useEffect(() => {
+    params.artId && dispatch(getArticleComment({ type: CommentType.Article, id: params.artId, sort: 'first' }))
+  }, [])
 
 
   const renderArticle = () => {
@@ -171,11 +184,18 @@ const Article = () => {
             <span>全部评论（{details.comm_count}）</span>
             <span>{details.like_count} 点赞</span>
           </div>
+          {
+            comments.total_count === 0 ? (<NoneComment />) :
+              (<div className="comment-list">
+                {
+                  comments.results.map((item) => {
+                    return <CommentItem key={item.com_id} {...item} />
+                  })
+                }
+                <InfiniteScroll hasMore={false} loadMore={loadMoreComments} />
+              </div>)
+          }
 
-          <div className="comment-list">
-            <CommentItem />
-            <InfiniteScroll hasMore={false} loadMore={loadMoreComments} />
-          </div>
         </div>
       </div>
     )

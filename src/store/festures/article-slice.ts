@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-08-13 17:10:29
  * @LastEditors: CHENJIE
- * @LastEditTime: 2022-08-20 21:40:45
+ * @LastEditTime: 2022-08-21 16:28:03
  * @FilePath: \react-geekh5-ts\src\store\festures\article-slice.ts
  * @Description: articleSlice
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -10,7 +10,7 @@
 
 
 import dayjs from "dayjs";
-import { ArticleAction, ArticleDetail, ArticleDetailResponse } from "@/types/data";
+import { ArticleAction, ArticleComment, ArticleCommentResponse, ArticleDetail, ArticleDetailResponse } from "@/types/data";
 import http from "@/utils/http";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "..";
@@ -20,11 +20,13 @@ enum API {
     getArticleById = '/articles/',
     followings = '/user/followings',
     likings = '/article/likings',
-    collections = '/article/collections'
+    collections = '/article/collections',
+    comments = '/comments'
 }
 
 type ArticleState = {
-    detail: ArticleDetail
+    detail: ArticleDetail,
+    comment: ArticleComment
 }
 
 const initialState: ArticleState = {
@@ -42,7 +44,14 @@ const initialState: ArticleState = {
         comm_count: 0,
         like_count: 0,
         read_count: 0
+    },
+    comment: {
+        total_count: 0,
+        end_id: null,
+        last_id: null,
+        results: []
     }
+
 }
 
 // 获取文章详情
@@ -86,6 +95,19 @@ export const updateInfo = createAsyncThunk('article/updateInfo', async (data: Ar
     return data
 })
 
+// 获取文章评论 覆盖数据
+type CommentsParams = {
+    type: string,
+    id: string,
+    sort: 'first' | 'notFirst',
+    offset?: string | null
+}
+export const getArticleComment = createAsyncThunk('article/getArticleComment', async (data: CommentsParams) => {
+    const res = await http.get<ArticleCommentResponse>(API.comments, { params: { type: data.type, source: data.id } })
+    return { data: res.data.data, sort: data.sort }
+})
+
+
 export const articleSlice = createSlice({
     name: 'article',
     initialState,
@@ -101,7 +123,16 @@ export const articleSlice = createSlice({
                     state.detail = { ...state.detail, attitude: payload.value === 1 ? 0 : 1 }
                 } else {
                     state.detail = { ...state.detail, [payload.name]: !payload.value }
-
+                }
+            })
+            .addCase(getArticleComment.fulfilled, (state, { payload }) => {
+                // 第一次请求数据
+                if (payload.sort === 'first') {
+                    state.comment = payload.data
+                } else {
+                    // 非第一次请求数据
+                    const { total_count, end_id, last_id, results } = payload.data
+                    state.comment = { ...state.comment, total_count, end_id, last_id, results: [...state.comment.results, ...results], }
                 }
             })
     },
@@ -109,3 +140,4 @@ export const articleSlice = createSlice({
 
 export default articleSlice.reducer
 export const selectArticleDetail = (state: RootState) => state.article.detail
+export const selectComment = (state: RootState) => state.article.comment

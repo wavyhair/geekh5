@@ -1,8 +1,8 @@
 /*
  * @Author: chenjie
  * @Date: 2022-08-08 21:25:22
- * @LastEditors: chenjie
- * @LastEditTime: 2022-08-08 21:39:00
+ * @LastEditors: CHENJIE
+ * @LastEditTime: 2022-08-21 18:22:42
  * @FilePath: \react-geekh5-ts\src\pages\Article\components\CommentItem\index.tsx
  * @Description: 
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -13,8 +13,9 @@ import classnames from 'classnames'
 import Icon from '@/components/Icon'
 
 import styles from './index.module.scss'
+import { ArtComment } from '@/types/data'
 
-type Props = {
+type Props = Partial<ArtComment> & {
   // normal 普通 - 文章的评论
   // origin 回复评论的原始评论，也就是对哪个评论进行回复
   // reply 回复评论
@@ -25,14 +26,13 @@ const CommentItem = ({
   // normal 普通
   // origin 回复评论的原始评论
   // reply 回复评论
-  type = 'normal'
+  type = 'normal', aut_id, aut_name, like_count, is_followed, is_liking, content, reply_count, pubdate
 }: Props) => {
-  const flag = true
   // 回复按钮
   const replyJSX =
     type === 'normal' ? (
       <span className="replay">
-        0 回复
+        {reply_count} 回复
         <Icon type="iconbtn_right" />
       </span>
     ) : null
@@ -44,33 +44,33 @@ const CommentItem = ({
       </div>
       <div className="comment-info">
         <div className="comment-info-header">
-          <span className="name">黑马先锋</span>
+          <span className="name">{aut_name}</span>
           {/* 文章评论、评论的回复 */}
           {(type === 'normal' || type === 'reply') && (
             <span className="thumbs-up">
-              10
-              <Icon type={flag ? 'iconbtn_like_sel' : 'iconbtn_like2'} />
+              {like_count}
+              <Icon type={is_liking ? 'iconbtn_like_sel' : 'iconbtn_like2'} />
             </span>
           )}
           {/* 要回复的评论 */}
           {type === 'origin' && (
-            <span className={classnames('follow', flag ? 'followed' : '')}>
-              {flag ? '已关注' : '关注'}
+            <span className={classnames('follow', is_followed ? 'followed' : '')}>
+              {is_followed ? '已关注' : '关注'}
             </span>
           )}
         </div>
-        <div className="comment-content">打破零评论</div>
+        <div className="comment-content">{content}</div>
         <div className="comment-footer">
           {replyJSX}
           {/* 非评论的回复 */}
           {type !== 'reply' && (
-            <span className="comment-time">{dayjs().from('2021-01-01')}</span>
+            <span className="comment-time">{dayjs().from(pubdate)}</span>
           )}
           {/* 文章的评论 */}
           {type === 'origin' && (
             <span className="thumbs-up">
               10
-              <Icon type={flag ? 'iconbtn_like_sel' : 'iconbtn_like2'} />
+              <Icon type={is_liking ? 'iconbtn_like_sel' : 'iconbtn_like2'} />
             </span>
           )}
         </div>

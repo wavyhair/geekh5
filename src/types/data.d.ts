@@ -2,11 +2,13 @@
  * @Author: chenjie
  * @Date: 2022-07-10 18:32:23
  * @LastEditors: CHENJIE
- * @LastEditTime: 2022-08-20 19:37:28
+ * @LastEditTime: 2022-08-21 16:14:33
  * @FilePath: \react-geekh5-ts\src\types\data.d.ts
  * @Description:
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
  */
+
+import { type } from "os";
 
 
 // token
@@ -122,12 +124,35 @@ export type ArticleDetail = {
     read_count: number;
 }
 
+// 评论项的类型
+export type ArtComment = {
+    com_id: string;
+    aut_id: string;
+    aut_name: string;
+    aut_photo: string;
+    like_count: number;
+    reply_count: number;
+    pubdate: string;
+    content: string;
+    is_liking: boolean;
+    is_followed: boolean;
+}
+// 文章评论的类型
+export type ArticleComment = {
+    total_count: number;
+    end_id: string | null;
+    last_id: string | null;
+    results: ArtComment[];
+}
+
 // 关注作者 收藏文章 点赞文章类型
 export type ArticleAction = {
     name: 'is_followed' | 'is_collected' | 'attitude';
     value: boolean | number;
     id?: string
 }
+
+
 
 // 修改头像响应信息
 export type UserPhotoResponse = ApiResponse<{ photo: string }>
@@ -153,3 +178,5 @@ export type SearchResultResponse = ApiResponse<SearchResult>
 // 文章详情响应数据
 export type ArticleDetailResponse = ApiResponse<ArticleDetail>
 
+// 评论响应数据
+export type ArticleCommentResponse = ApiResponse<ArticleComment>
