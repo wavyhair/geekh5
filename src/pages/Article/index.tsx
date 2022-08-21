@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-08-08 21:25:22
  * @LastEditors: CHENJIE
- * @LastEditTime: 2022-08-21 18:23:54
+ * @LastEditTime: 2022-08-21 18:57:30
  * @FilePath: \react-geekh5-ts\src\pages\Article\index.tsx
  * @Description: 
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -47,11 +47,10 @@ const Article = () => {
   const [showNavAuthor, setShowNavAuthor] = useState(false)
   const commentRef = useRef<HTMLDivElement>(null)
   const isShowComment = useRef(false)
-  console.log('comments', comments)
   const loadMoreComments = async () => {
-    console.log('加载更多评论')
+    params.artId && await dispatch(getArticleComment({ type: CommentType.Article, id: params.artId, sort: 'notFirst' }))
   }
-
+  const hasMore = comments.end_id !== comments.last_id
   // 防抖函数
   const { run } = useThrottleFn(() => {
     const { bottom } = authorRef.current!.getBoundingClientRect()
@@ -192,7 +191,7 @@ const Article = () => {
                     return <CommentItem key={item.com_id} {...item} />
                   })
                 }
-                <InfiniteScroll hasMore={false} loadMore={loadMoreComments} />
+                <InfiniteScroll hasMore={hasMore} loadMore={loadMoreComments} />
               </div>)
           }
 
