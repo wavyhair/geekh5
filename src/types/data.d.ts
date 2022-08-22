@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-07-10 18:32:23
  * @LastEditors: CHENJIE
- * @LastEditTime: 2022-08-21 16:14:33
+ * @LastEditTime: 2022-08-22 20:42:13
  * @FilePath: \react-geekh5-ts\src\types\data.d.ts
  * @Description:
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -152,6 +152,16 @@ export type ArticleAction = {
     id?: string
 }
 
+// 文章评论类型
+type AddArticleComment = {
+    // 新建评论的 id
+    com_id: string;
+    // 对谁进行了评论，如果是对文章进行评论，那么就是文章的id
+    target: string;
+    // 文章id
+    new_obj: ArtComment;
+}
+
 
 
 // 修改头像响应信息
@@ -180,3 +190,6 @@ export type ArticleDetailResponse = ApiResponse<ArticleDetail>
 
 // 评论响应数据
 export type ArticleCommentResponse = ApiResponse<ArticleComment>
+
+// 新增文章评论响应数据
+export type AddArticleCommentResp = ApiResponse<AddArticleComment>

@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-08-08 21:25:22
  * @LastEditors: CHENJIE
- * @LastEditTime: 2022-08-21 18:57:30
+ * @LastEditTime: 2022-08-22 20:55:58
  * @FilePath: \react-geekh5-ts\src\pages\Article\index.tsx
  * @Description: 
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -13,22 +13,25 @@
 import ContentLoader from 'react-content-loader'
 import hljs from 'highlight.js'
 import 'highlight.js/styles/dark.css'
-import { NavBar, InfiniteScroll } from 'antd-mobile'
+import { NavBar, InfiniteScroll, Popup } from 'antd-mobile'
 import { useNavigate } from 'react-router-dom'
 import classNames from 'classnames'
 import styles from './index.module.scss'
 import { useThrottleFn } from 'ahooks'
 
 import Icon from '@/components/Icon'
+import NoneComment from './components/NoneComment'
+import CommentInput from './components/CommentInput'
 import CommentItem from './components/CommentItem'
 import CommentFooter from './components/CommentFooter'
+
 import { useInitialState } from '@/utils/use-initial-state'
-import { getArticleById, getArticleComment, selectArticleDetail, selectComment, updateInfo } from '@/store/festures/article-slice'
+import { addComment, getArticleById, getArticleComment, selectArticleDetail, selectComment, updateInfo } from '@/store/festures/article-slice'
 import { ArticleDetail } from '@/types/data'
 import { useParams } from 'react-router-dom'
 import { useEffect, useRef, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
-import NoneComment from './components/NoneComment'
+
 
 /**
    * 导航栏高度常量
@@ -45,6 +48,8 @@ const Article = () => {
   const wrapperRef = useRef<HTMLDivElement>(null)
   const authorRef = useRef<HTMLDivElement>(null)
   const [showNavAuthor, setShowNavAuthor] = useState(false)
+  const [commentVisible, setCommentVisible] = useState(false)
+
   const commentRef = useRef<HTMLDivElement>(null)
   const isShowComment = useRef(false)
   const loadMoreComments = async () => {
@@ -116,6 +121,40 @@ const Article = () => {
     params.artId && dispatch(getArticleComment({ type: CommentType.Article, id: params.artId, sort: 'first' }))
   }, [])
 
+  // 打开评论抽屉
+  const onCommentShow = () => {
+    setCommentVisible(true)
+  }
+
+  // 关闭评论抽屉
+  const onCommentHide = () => {
+    setCommentVisible(false)
+  }
+
+  // 添加评论
+  const onAddComment = async (content: string) => {
+    console.log('content', content)
+    await dispatch(addComment({ target: details.art_id, content }))
+    onCommentHide()
+  }
+
+  // 渲染评论抽屉方法
+
+  const renderCommentPopup = () => {
+    return (
+      <Popup
+        className="comment-popup"
+        position="bottom"
+        visible={commentVisible}
+        destroyOnClose
+        onMaskClick={onCommentHide}
+      >
+        <div className="comment-popup-wrapper">
+          <CommentInput onClose={onCommentHide} onAddComment={onAddComment} />
+        </div>
+      </Popup>
+    )
+  }
 
   const renderArticle = () => {
     // 文章详情
@@ -233,11 +272,13 @@ const Article = () => {
         {/* 底部评论栏 */}
         <CommentFooter
           onShowComment={onShowComment}
+          onCommentShow={onCommentShow}
           onLike={() => dispatch(updateInfo({ name: 'attitude', value: details.attitude, id: details.art_id }))}
           attitude={details.attitude}
           onCollected={() => dispatch(updateInfo({ name: 'is_collected', value: details.is_collected, id: details.art_id }))}
           details={details}
         />
+        {renderCommentPopup()}
       </div>
     </div>
   )

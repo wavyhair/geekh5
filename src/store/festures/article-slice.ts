@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-08-13 17:10:29
  * @LastEditors: CHENJIE
- * @LastEditTime: 2022-08-21 16:28:03
+ * @LastEditTime: 2022-08-22 20:55:31
  * @FilePath: \react-geekh5-ts\src\store\festures\article-slice.ts
  * @Description: articleSlice
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -10,7 +10,7 @@
 
 
 import dayjs from "dayjs";
-import { ArticleAction, ArticleComment, ArticleCommentResponse, ArticleDetail, ArticleDetailResponse } from "@/types/data";
+import { AddArticleCommentResp, ArticleAction, ArticleComment, ArticleCommentResponse, ArticleDetail, ArticleDetailResponse } from "@/types/data";
 import http from "@/utils/http";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "..";
@@ -95,6 +95,8 @@ export const updateInfo = createAsyncThunk('article/updateInfo', async (data: Ar
     return data
 })
 
+
+
 // 获取文章评论 覆盖数据
 type CommentsParams = {
     type: string,
@@ -105,6 +107,13 @@ type CommentsParams = {
 export const getArticleComment = createAsyncThunk('article/getArticleComment', async (data: CommentsParams) => {
     const res = await http.get<ArticleCommentResponse>(API.comments, { params: { type: data.type, source: data.id } })
     return { data: res.data.data, sort: data.sort }
+})
+
+// 添加文章评论
+
+export const addComment = createAsyncThunk('article/addComment', async (data: { target: string, content: string }) => {
+    const res = await http.post<AddArticleCommentResp>(API.comments, { target: data.target, content: data.content })
+    return res.data.data.new_obj
 })
 
 
@@ -134,6 +143,9 @@ export const articleSlice = createSlice({
                     const { total_count, end_id, last_id, results } = payload.data
                     state.comment = { ...state.comment, total_count, end_id, last_id, results: [...state.comment.results, ...results], }
                 }
+            })
+            .addCase(addComment.fulfilled, (state, { payload }) => {
+                state.comment = { ...state.comment, total_count: state.comment.total_count + 1, results: [payload, ...state.comment.results] }
             })
     },
 })

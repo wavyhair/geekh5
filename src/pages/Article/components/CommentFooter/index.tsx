@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-08-08 21:25:22
  * @LastEditors: CHENJIE
- * @LastEditTime: 2022-08-20 21:47:36
+ * @LastEditTime: 2022-08-22 20:25:45
  * @FilePath: \react-geekh5-ts\src\pages\Article\components\CommentFooter\index.tsx
  * @Description: 
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -18,14 +18,15 @@ type Props = {
   onShowComment: () => void
   onLike: () => void
   onCollected: () => void
+  onCommentShow: () => void
   attitude: number
   details: ArticleDetail
 }
 
-const CommentFooter = ({ type = 'normal', details, onShowComment, onLike, onCollected }: Props) => {
+const CommentFooter = ({ type = 'normal', details, onShowComment, onLike, onCollected, onCommentShow }: Props) => {
   return (
     <div className={styles.root}>
-      <div className="input-btn">
+      <div className="input-btn" onClick={onCommentShow}>
         <Icon type="iconbianji" />
         <span>抢沙发</span>
       </div>
