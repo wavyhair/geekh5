@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-08-08 21:25:22
  * @LastEditors: CHENJIE
- * @LastEditTime: 2022-08-22 20:55:58
+ * @LastEditTime: 2022-08-24 22:06:57
  * @FilePath: \react-geekh5-ts\src\pages\Article\index.tsx
  * @Description: 
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -26,7 +26,7 @@ import CommentItem from './components/CommentItem'
 import CommentFooter from './components/CommentFooter'
 
 import { useInitialState } from '@/utils/use-initial-state'
-import { addComment, getArticleById, getArticleComment, selectArticleDetail, selectComment, updateInfo } from '@/store/festures/article-slice'
+import { addComment, getArticleById, getArticleComment, likeComment, selectArticleDetail, selectComment, updateInfo } from '@/store/festures/article-slice'
 import { ArticleDetail } from '@/types/data'
 import { useParams } from 'react-router-dom'
 import { useEffect, useRef, useState } from 'react'
@@ -133,9 +133,13 @@ const Article = () => {
 
   // 添加评论
   const onAddComment = async (content: string) => {
-    console.log('content', content)
     await dispatch(addComment({ target: details.art_id, content }))
     onCommentHide()
+  }
+
+  // 点赞/取消点赞
+  const onThumbsUp = async (art_id: string, is_liking: boolean) => {
+    await dispatch(likeComment({ art_id, is_liking }))
   }
 
   // 渲染评论抽屉方法
@@ -227,7 +231,7 @@ const Article = () => {
               (<div className="comment-list">
                 {
                   comments.results.map((item) => {
-                    return <CommentItem key={item.com_id} {...item} />
+                    return <CommentItem key={item.com_id} {...item} onThumbsUp={() => onThumbsUp(item.com_id, item.is_liking)} />
                   })
                 }
                 <InfiniteScroll hasMore={hasMore} loadMore={loadMoreComments} />

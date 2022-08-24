@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-08-13 17:10:29
  * @LastEditors: CHENJIE
- * @LastEditTime: 2022-08-22 20:55:31
+ * @LastEditTime: 2022-08-24 21:47:58
  * @FilePath: \react-geekh5-ts\src\store\festures\article-slice.ts
  * @Description: articleSlice
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -21,7 +21,8 @@ enum API {
     followings = '/user/followings',
     likings = '/article/likings',
     collections = '/article/collections',
-    comments = '/comments'
+    comments = '/comments',
+    likeComment = '/comment/likings'
 }
 
 type ArticleState = {
@@ -61,7 +62,7 @@ export const getArticleById = createAsyncThunk('article/getArticleById', async (
 
 })
 
-// 关注 点赞 收藏
+// 文章关注 点赞 收藏
 export const updateInfo = createAsyncThunk('article/updateInfo', async (data: ArticleAction) => {
     // 是否点赞
     if (data.name === 'is_followed') {
@@ -110,10 +111,25 @@ export const getArticleComment = createAsyncThunk('article/getArticleComment', a
 })
 
 // 添加文章评论
-
 export const addComment = createAsyncThunk('article/addComment', async (data: { target: string, content: string }) => {
     const res = await http.post<AddArticleCommentResp>(API.comments, { target: data.target, content: data.content })
     return res.data.data.new_obj
+})
+
+// 评论点赞/取消点赞
+type LikeCommentType = {
+    art_id: string,
+    is_liking: boolean
+}
+export const likeComment = createAsyncThunk('article/likeComment', async (data: LikeCommentType) => {
+    if (data.is_liking) {
+        // 取消点赞
+        await http.delete(API.likeComment + '/' + data.art_id)
+    } else {
+        // 点赞
+        await http.post(API.likeComment, { target: data.art_id })
+    }
+    return { name: 'is_liking', value: !data.is_liking, target: data.art_id, like_count: data.is_liking ? -1 : 1 }
 })
 
 
@@ -146,6 +162,20 @@ export const articleSlice = createSlice({
             })
             .addCase(addComment.fulfilled, (state, { payload }) => {
                 state.comment = { ...state.comment, total_count: state.comment.total_count + 1, results: [payload, ...state.comment.results] }
+            })
+            .addCase(likeComment.fulfilled, (state, { payload }) => {
+                state.comment = {
+                    ...state.comment, results: state.comment.results.map(item => {
+                        if (item.com_id === payload.target) {
+                            return {
+                                ...item, [payload.name]: payload.value, like_count: item.like_count + payload.like_count
+                            }
+                        }
+                        return item
+                    })
+                }
+
+
             })
     },
 })
