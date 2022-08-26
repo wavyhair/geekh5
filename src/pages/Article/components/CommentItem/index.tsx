@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-08-08 21:25:22
  * @LastEditors: CHENJIE
- * @LastEditTime: 2022-08-24 22:05:54
+ * @LastEditTime: 2022-08-26 21:39:09
  * @FilePath: \react-geekh5-ts\src\pages\Article\components\CommentItem\index.tsx
  * @Description: 
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -20,19 +20,20 @@ type Props = Partial<ArtComment> & {
   // origin 回复评论的原始评论，也就是对哪个评论进行回复
   // reply 回复评论
   type?: 'normal' | 'reply' | 'origin',
-  onThumbsUp: () => void
+  onThumbsUp?: () => void
+  onReply?: () => void
 }
 
 const CommentItem = ({
   // normal 普通
   // origin 回复评论的原始评论
   // reply 回复评论
-  type = 'normal', onThumbsUp, com_id, aut_name, like_count, is_followed, is_liking, content, reply_count, pubdate
+  type = 'normal', onThumbsUp, onReply, com_id, aut_name, like_count, is_followed, is_liking, content, reply_count, pubdate
 }: Props) => {
   // 回复按钮
   const replyJSX =
     type === 'normal' ? (
-      <span className="replay">
+      <span className="replay" onClick={onReply}>
         {reply_count} 回复
         <Icon type="iconbtn_right" />
       </span>

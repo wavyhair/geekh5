@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-08-08 21:25:22
  * @LastEditors: CHENJIE
- * @LastEditTime: 2022-08-24 22:06:57
+ * @LastEditTime: 2022-08-26 22:02:44
  * @FilePath: \react-geekh5-ts\src\pages\Article\index.tsx
  * @Description: 
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -31,6 +31,7 @@ import { ArticleDetail } from '@/types/data'
 import { useParams } from 'react-router-dom'
 import { useEffect, useRef, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import Reply from './components/Reply'
 
 
 /**
@@ -49,6 +50,8 @@ const Article = () => {
   const authorRef = useRef<HTMLDivElement>(null)
   const [showNavAuthor, setShowNavAuthor] = useState(false)
   const [commentVisible, setCommentVisible] = useState(false)
+  // 评论回复的弹出层
+  const [showRepaly, setShowRepaly] = useState(false)
 
   const commentRef = useRef<HTMLDivElement>(null)
   const isShowComment = useRef(false)
@@ -94,6 +97,11 @@ const Article = () => {
       wrapper.scrollTo({ top: 0, behavior: 'smooth' })
       isShowComment.current = false
     }
+  }
+
+  // 评论回复弹窗关闭
+  const onCommentReplyHide = () => {
+    setShowRepaly(false)
   }
 
   // 来表示评论类型
@@ -231,7 +239,13 @@ const Article = () => {
               (<div className="comment-list">
                 {
                   comments.results.map((item) => {
-                    return <CommentItem key={item.com_id} {...item} onThumbsUp={() => onThumbsUp(item.com_id, item.is_liking)} />
+                    return <CommentItem
+                      key={item.com_id}
+                      {...item}
+                      onThumbsUp={() => onThumbsUp(item.com_id, item.is_liking)}
+                      onReply={() => { setShowRepaly(true) }}
+
+                    />
                   })
                 }
                 <InfiniteScroll hasMore={hasMore} loadMore={loadMoreComments} />
@@ -240,6 +254,21 @@ const Article = () => {
 
         </div>
       </div>
+    )
+  }
+
+  // 渲染评论回复的弹出层
+  const renderReply = () => {
+    return (
+      <Popup
+        className="reply-popup"
+        position="right"
+        visible={showRepaly}
+      >
+        <div className="comment-popup-wrapper">
+          <Reply onClose={onCommentReplyHide} />
+        </div>
+      </Popup>
     )
   }
 
@@ -275,6 +304,7 @@ const Article = () => {
 
         {/* 底部评论栏 */}
         <CommentFooter
+          placeholder='抢沙发~'
           onShowComment={onShowComment}
           onCommentShow={onCommentShow}
           onLike={() => dispatch(updateInfo({ name: 'attitude', value: details.attitude, id: details.art_id }))}
@@ -283,6 +313,7 @@ const Article = () => {
           details={details}
         />
         {renderCommentPopup()}
+        {renderReply()}
       </div>
     </div>
   )
