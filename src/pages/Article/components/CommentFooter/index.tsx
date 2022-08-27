@@ -21,10 +21,11 @@ type Props = {
   onCommentShow?: () => void
   attitude?: number
   details?: ArticleDetail,
-  placeholder: string
+  placeholder: string,
+    isShow?:boolean
 }
 
-const CommentFooter = ({ type = 'normal', details, onShowComment, onLike, onCollected, onCommentShow, placeholder = "抢沙发~" }: Props) => {
+const CommentFooter = ({ type = 'normal', isShow=true,details, onShowComment, onLike, onCollected, onCommentShow, placeholder = "抢沙发~" }: Props) => {
   return (
     <div className={styles.root}>
       <div className="input-btn" onClick={onCommentShow}>
@@ -50,17 +51,26 @@ const CommentFooter = ({ type = 'normal', details, onShowComment, onLike, onColl
         </>
       )}
 
-      {type === 'reply' && (
+
+
+      {(type === 'reply' && isShow)&& (
         <div className="action-item" onClick={onLike}>
           <Icon type={details?.attitude === 1 ? 'iconbtn_like_sel' : 'iconbtn_like2'} />
           <p>点赞</p>
         </div>
       )}
 
-      <div className="action-item">
-        <Icon type="iconbtn_share" />
-        <p>分享</p>
-      </div>
+        {
+            isShow && (
+                <div  className="action-item">
+                    <Icon type="iconbtn_share" />
+                    <p>分享</p>
+                </div>
+
+            )
+        }
+
+
     </div>
   )
 }

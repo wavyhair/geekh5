@@ -10,9 +10,17 @@
 
 
 import dayjs from "dayjs";
-import { AddArticleCommentResp, ArticleAction, ArticleComment, ArticleCommentResponse, ArticleDetail, ArticleDetailResponse } from "@/types/data";
+import {
+    AddArticleCommentResp,
+    ArticleAction,
+    ArticleComment,
+    ArticleCommentResponse,
+    ArticleDetail,
+    ArticleDetailResponse,
+    UpdateComment
+} from "@/types/data";
 import http from "@/utils/http";
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice,PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "..";
 
 
@@ -66,7 +74,7 @@ export const getArticleById = createAsyncThunk('article/getArticleById', async (
 export const updateInfo = createAsyncThunk('article/updateInfo', async (data: ArticleAction) => {
     // 是否点赞
     if (data.name === 'is_followed') {
-        console.log('data.value', data.value)
+
         if (data.value) {
             // 取消关注
             await http.delete(API.followings + '/' + data.id)
@@ -136,7 +144,20 @@ export const likeComment = createAsyncThunk('article/likeComment', async (data: 
 export const articleSlice = createSlice({
     name: 'article',
     initialState,
-    reducers: {},
+    reducers: {
+        // 更新评论回复数量
+       updateCommentCount:(state,action:PayloadAction<UpdateComment>)=> {
+           state.comment = {...state.comment,results:state.comment.results.map(item=>{
+               if(item.com_id===action.payload.commentId) {
+                   return {
+                       ...item,
+                       reply_count:action.payload.total
+                   }
+               }
+               return item
+               })}
+        }
+    },
     extraReducers(builder) {
         builder
             .addCase(getArticleById.fulfilled, (state, { payload }) => {
@@ -181,5 +202,6 @@ export const articleSlice = createSlice({
 })
 
 export default articleSlice.reducer
+export const  {updateCommentCount}  = articleSlice.actions
 export const selectArticleDetail = (state: RootState) => state.article.detail
 export const selectComment = (state: RootState) => state.article.comment

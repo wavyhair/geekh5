@@ -28,7 +28,7 @@ const CommentItem = ({
   // normal 普通
   // origin 回复评论的原始评论
   // reply 回复评论
-  type = 'normal', onThumbsUp, onReply, com_id, aut_name, like_count, is_followed, is_liking, content, reply_count, pubdate
+  type = 'normal', onThumbsUp, onReply, aut_photo, aut_name, like_count, is_followed, is_liking, content, reply_count, pubdate
 }: Props) => {
   // 回复按钮
   const replyJSX =
@@ -42,7 +42,7 @@ const CommentItem = ({
   return (
     <div className={styles.root}>
       <div className="avatar">
-        <img src="http://geek.itheima.net/images/user_head.jpg" alt="" />
+        <img src={aut_photo || "http://geek.itheima.net/images/user_head.jpg"} alt="" />
       </div>
       <div className="comment-info">
         <div className="comment-info-header">
@@ -71,8 +71,8 @@ const CommentItem = ({
           {/* 文章的评论 */}
           {type === 'origin' && (
             <span className="thumbs-up">
-              10
-              <Icon type={is_liking ? 'iconbtn_like_sel' : 'iconbtn_like2'} />
+              {like_count}
+              <Icon type={is_liking ? 'iconbtn_like_sel' : 'iconbtn_like2'} onClick={onThumbsUp} />
             </span>
           )}
         </div>

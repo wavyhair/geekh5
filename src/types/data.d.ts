@@ -162,7 +162,16 @@ type AddArticleComment = {
     new_obj: ArtComment;
 }
 
+// 评论回复类型
+type AddCommentReply = AddArticleComment & {
+    art_id:string
+}
+export type AddCommentReplyResponse = ApiResponse<AddCommentReply>
 
+export type UpdateComment = {
+    commentId: string
+    total: number
+}
 
 // 修改头像响应信息
 export type UserPhotoResponse = ApiResponse<{ photo: string }>

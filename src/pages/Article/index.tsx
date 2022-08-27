@@ -2,7 +2,7 @@
  * @Author: chenjie
  * @Date: 2022-08-08 21:25:22
  * @LastEditors: CHENJIE
- * @LastEditTime: 2022-08-26 22:02:44
+ * @LastEditTime: 2022-08-27 11:18:17
  * @FilePath: \react-geekh5-ts\src\pages\Article\index.tsx
  * @Description: 
  * Copyright (c) 2022 by chenjie, All Rights Reserved.
@@ -18,7 +18,6 @@ import { useNavigate } from 'react-router-dom'
 import classNames from 'classnames'
 import styles from './index.module.scss'
 import { useThrottleFn } from 'ahooks'
-
 import Icon from '@/components/Icon'
 import NoneComment from './components/NoneComment'
 import CommentInput from './components/CommentInput'
@@ -26,8 +25,8 @@ import CommentItem from './components/CommentItem'
 import CommentFooter from './components/CommentFooter'
 
 import { useInitialState } from '@/utils/use-initial-state'
-import { addComment, getArticleById, getArticleComment, likeComment, selectArticleDetail, selectComment, updateInfo } from '@/store/festures/article-slice'
-import { ArticleDetail } from '@/types/data'
+import { addComment, getArticleById, getArticleComment, likeComment, selectArticleDetail, selectComment, updateInfo,updateCommentCount } from '@/store/festures/article-slice'
+import { ArtComment, ArticleDetail } from '@/types/data'
 import { useParams } from 'react-router-dom'
 import { useEffect, useRef, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
@@ -51,7 +50,15 @@ const Article = () => {
   const [showNavAuthor, setShowNavAuthor] = useState(false)
   const [commentVisible, setCommentVisible] = useState(false)
   // 评论回复的弹出层
-  const [showRepaly, setShowRepaly] = useState(false)
+  type CommentReply = {
+    visible: boolean
+    commentItem: ArtComment
+  }
+
+  const [showRepaly, setShowRepaly] = useState<CommentReply>({
+    visible: false,
+    commentItem: {} as ArtComment
+  })
 
   const commentRef = useRef<HTMLDivElement>(null)
   const isShowComment = useRef(false)
@@ -100,9 +107,19 @@ const Article = () => {
   }
 
   // 评论回复弹窗关闭
-  const onCommentReplyHide = () => {
-    setShowRepaly(false)
+  const onCloseReplyWithUpdate  = (commentId: string, total: number) => {
+    // 先修改redux中的评论列表数据
+    dispatch(updateCommentCount({commentId,total}))
+    onCloseReply()
   }
+  const onCloseReply = ()=>{
+    setShowRepaly({
+      ...showRepaly,
+      visible: false,
+    })
+  }
+
+
 
   // 来表示评论类型
   enum CommentType {
@@ -243,7 +260,7 @@ const Article = () => {
                       key={item.com_id}
                       {...item}
                       onThumbsUp={() => onThumbsUp(item.com_id, item.is_liking)}
-                      onReply={() => { setShowRepaly(true) }}
+                      onReply={() => { setShowRepaly({ commentItem: item, visible: true }) }}
 
                     />
                   })
@@ -263,10 +280,15 @@ const Article = () => {
       <Popup
         className="reply-popup"
         position="right"
-        visible={showRepaly}
+        visible={showRepaly.visible}
       >
         <div className="comment-popup-wrapper">
-          <Reply onClose={onCommentReplyHide} />
+          <Reply
+              onClose={onCloseReplyWithUpdate }
+              commentItem={showRepaly.commentItem}
+              onReplyThumbsUp={onThumbsUp}
+              articleId={params!.artId}
+          />
         </div>
       </Popup>
     )
@@ -304,7 +326,7 @@ const Article = () => {
 
         {/* 底部评论栏 */}
         <CommentFooter
-          placeholder='抢沙发~'
+          placeholder={details.comm_count>0?'去评论~':'抢沙发~'}
           onShowComment={onShowComment}
           onCommentShow={onCommentShow}
           onLike={() => dispatch(updateInfo({ name: 'attitude', value: details.attitude, id: details.art_id }))}
