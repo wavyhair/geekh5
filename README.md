@@ -19,15 +19,14 @@
         hooks 库：ahooks
         websocket 即时通讯
 
-
-/src
-  /assets         项目资源文件，比如，图片 等
-  /components     通用组件
-  /pages          页面
-  /store          Redux 状态仓库
-  /types          TS 类型，包括：接口、redux等类型
-  /utils          工具，比如，token、axios 的封装等
-  App.scss        根组件样式文件
-  App.tsx         根组件
-  index.scss      全局样式
-  index.tsx       项目入口
+| /src    | Description                       |
+| ------- | --------------------------------- |
+| /assets | 项目资源文件，比如，图片 等       |
+| /pages  | 页面                              |
+| /store  | Redux 状态仓库                    |
+| /types  | TS 类型，包括：接口、redux 等类型 |
+| /utils  | 工具，比如，token、axios 的封装等 |
+| App.scss | 根组件样式文件 |
+| App.tsx | 根组件 |
+| index.scss | 全局样式 |
+| index.tsx | 项目入口 |
