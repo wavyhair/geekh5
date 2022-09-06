@@ -8,7 +8,7 @@
     技术栈：
         项目搭建：React 官方脚手架 create-react-app
         react hooks
-        状态管理：redux
+        状态管理：Redux Toolkit
         UI 组件库：antd-mobile v5
         ajax 请求库：axios
         路由：react-router-dom 以及 history
